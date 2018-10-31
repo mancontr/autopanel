@@ -1,0 +1,10 @@
+{
+  "dashboard": "Dashboard",
+  "entities": "Entities",
+  "loading": "Loading ...",
+  "login": "Sign in",
+  "login.choose": "Select your provider:",
+  "logout": "Sign out",
+  "projects": "Projects",
+  "settings": "Settings"
+}

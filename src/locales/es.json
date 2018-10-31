@@ -1,0 +1,10 @@
+{
+  "dashboard": "Escritorio",
+  "entities": "Entidades",
+  "loading": "Cargando ...",
+  "login": "Iniciar sesión",
+  "login.choose": "Selecciona un proveedor:",
+  "logout": "Cerrar sesión",
+  "projects": "Proyectos",
+  "settings": "Ajustes"
+}
