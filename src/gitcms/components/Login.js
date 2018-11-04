@@ -1,9 +1,10 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
-import Config from '../Config'
+import Config from 'src/gitcms/Config'
 import './Login.sass'
 
 export class Login extends React.Component {
+
   render = () => (
     <main id="login">
       <h1><FormattedMessage id="login" /></h1>

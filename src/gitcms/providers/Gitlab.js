@@ -16,25 +16,26 @@ class Gitlab {
     '&state=gitlab'
   )
 
-  callback = async (props) => {
-    const q = QueryString.parse(props.location.hash.substring(1))
+  callback = async ({ location }) => {
+    const q = QueryString.parse(location.hash.substring(1))
     if (q.access_token) {
       const url = prefix + '/user'
       const res = await fetch(url, {
         headers: { Authorization: 'Bearer ' + q.access_token }
       })
       const userinfo = await res.json()
-      props.login(q.access_token, {
-        name: userinfo.name,
-        avatar: userinfo.avatar_url,
-        provider: this.getId()
-      })
-      // return info?
+      return {
+        token: q.access_token,
+        userinfo: {
+          name: userinfo.name,
+          avatar: userinfo.avatar_url,
+          provider: this.getId()
+        }
+      }
     }
   }
 
   getProjects = async () => {
-    // TODO: How do we get the token?
     const token = window.store.getState().user.token
     const url = prefix + '/projects?' + QueryString.stringify({
       membership: 'true',
@@ -51,6 +52,23 @@ class Gitlab {
       description: p.description,
       avatar: p.avatar_url
     }))
+  }
+
+  getProject = async (projectId) => {
+    const token = window.store.getState().user.token
+    const url = prefix + '/projects/' + projectId
+    const res = await fetch(url, {
+      headers: { Authorization: 'Bearer ' + token }
+    })
+    const project = await res.json()
+    return {
+      id: project.id,
+      name: project.name,
+      fullname: project.fullname,
+      description: project.description,
+      avatar: project.avatar_url
+      // TODO: Add schema
+    }
   }
 
 }

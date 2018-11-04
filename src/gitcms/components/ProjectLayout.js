@@ -3,12 +3,17 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import Menu from 'src/gitcms/components/Menu'
+import { setProject } from 'src/store/actions/gitcms'
 import './ProjectLayout.sass'
 
 export class ProjectLayout extends React.Component {
   static propTypes = {
     children: PropTypes.element,
     params: PropTypes.object.isRequired
+  }
+
+  componentDidMount = () => {
+    this.props.setProject(this.props.params.projectId)
   }
 
   render = () => (
@@ -21,10 +26,4 @@ export class ProjectLayout extends React.Component {
   )
 }
 
-const mapStateToProps = (state) => ({
-  user: state.user.userinfo
-})
-
-const ProjectLayoutContainer = connect(mapStateToProps)(ProjectLayout)
-
-export default ProjectLayoutContainer
+export default connect(null, { setProject })(ProjectLayout)

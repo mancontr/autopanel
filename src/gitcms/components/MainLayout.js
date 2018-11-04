@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import ConfigProvider from 'src/gitcms/ConfigProvider'
 import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
 
@@ -15,7 +14,7 @@ export class MainLayout extends React.Component {
   }
 
   render = () => __CLIENT__ && (
-    <ConfigProvider>
+    <React.Fragment>
       <Helmet>
         <title>GitCMS</title>
         <link rel="icon" type="image/png" href="/favicon.png" />
@@ -26,7 +25,7 @@ export class MainLayout extends React.Component {
           {this.props.user ? this.props.children : <Login />}
         </div>
       </div>
-    </ConfigProvider>
+    </React.Fragment>
   )
 }
 

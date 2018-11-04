@@ -3,64 +3,66 @@ import PropTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
-import Config from '../Config'
+import { getProjects } from 'src/store/actions/gitcms'
 import './ProjectPicker.sass'
 
 export class ProjectPicker extends React.Component {
 
   static propTypes = {
-    user: PropTypes.object
+    getProjects: PropTypes.func.isRequired,
+    projects: PropTypes.object.isRequired
   }
 
   componentDidMount = () => {
-    const provider = Config.getProvider(this.props.user.provider)
-    provider.getProjects()
-      .then((projects) => this.setState({ projects }))
+    this.props.getProjects()
   }
 
-  constructor (props) {
-    super(props)
-    this.state = {}
+  renderProject = (project) => {
+    const style = {}
+    let overlay = false
+    if (project.avatar) {
+      style.backgroundImage = 'url("' + project.avatar + '")'
+    } else {
+      overlay = project.name[0].toUpperCase()
+    }
+    return (
+      <Link to={'/project/' + project.id} className="project" key={project.id}>
+        <div className="avatar" style={style}>{overlay}</div>
+        <div className="info">
+          <div className="name">{project.fullname}</div>
+          {project.description && (
+            <div className="description">{project.description}</div>
+          )}
+        </div>
+      </Link>
+    )
   }
 
-  render = () => (
-    <main id="project-picker">
-      <h1><FormattedMessage id="projects" /></h1>
-      <div className="box">
-        {!this.state.projects && <FormattedMessage id="loading" />}
-        {this.state.projects && (
-          <div className="projects">
-            {this.state.projects.map((p) => {
-              const style = {}
-              let overlay = false
-              if (p.avatar) {
-                style.backgroundImage = 'url("' + p.avatar + '")'
-              } else {
-                overlay = p.name[0].toUpperCase()
-              }
-              return (
-                <Link to={'/project/' + p.id} className="project" key={p.id}>
-                  <div className="avatar" style={style}>{overlay}</div>
-                  <div className="info">
-                    <div className="name">{p.fullname}</div>
-                    {p.description && (
-                      <div className="description">{p.description}</div>
-                    )}
-                  </div>
-                </Link>
-              )
-            })}
-          </div>
-        )}
-      </div>
-    </main>
-  )
+  render = () => {
+    let content = <FormattedMessage id="loading" />
+
+    if (this.props.projects.isError) {
+      content = <FormattedMessage id="projects.error" />
+    }
+    if (this.props.projects.isSuccess) {
+      content = (
+        <div className="projects">
+          {this.props.projects.value.map(this.renderProject)}
+        </div>
+      )
+    }
+
+    return (
+      <main id="project-picker">
+        <h1><FormattedMessage id="projects" /></h1>
+        <div className="box">{content}</div>
+      </main>
+    )
+  }
 }
 
 const mapStateToProps = (state) => ({
-  user: state.user.userinfo
+  projects: state.projects.list || {}
 })
 
-const ProjectPickerContainer = connect(mapStateToProps)(ProjectPicker)
-
-export default ProjectPickerContainer
+export default connect(mapStateToProps, { getProjects })(ProjectPicker)

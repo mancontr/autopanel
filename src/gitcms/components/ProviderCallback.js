@@ -1,21 +1,21 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
-import { login } from 'src/store/actions/user'
-import Config from '../Config'
+import { FormattedMessage } from 'react-intl'
+import { callback } from 'src/store/actions/gitcms'
 
 export class ProviderCallback extends React.Component {
 
   static propTypes = {
     params: PropTypes.object.isRequired,
-    router: PropTypes.object.isRequired
+    router: PropTypes.object.isRequired,
+    callback: PropTypes.func.isRequired
   }
 
   componentDidMount = () => {
     // Find this provider
-    const provider = Config.getProvider(this.props.params.provider)
-    provider.callback(this.props)
+    const provider = this.props.params.provider
+    this.props.callback(provider, this.props)
       .then(() => this.props.router.replace('/'))
   }
 
@@ -23,6 +23,4 @@ export class ProviderCallback extends React.Component {
 
 }
 
-const ProviderCallbackContainer = connect(null, { login })(ProviderCallback)
-
-export default ProviderCallbackContainer
+export default connect(null, { callback })(ProviderCallback)

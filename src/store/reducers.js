@@ -1,8 +1,9 @@
 import user from './reducers/user'
+import projects from './reducers/projects'
 
 export const reducerList = {
-  // Add your reducers here
-  user: user
+  user,
+  projects
 }
 
 export default reducerList

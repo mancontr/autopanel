@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
-import { logout } from 'src/store/actions/user'
+import { logout } from 'src/store/actions/gitcms'
 
 import './Header.sass'
 
