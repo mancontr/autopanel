@@ -61,14 +61,27 @@ class Gitlab {
       headers: { Authorization: 'Bearer ' + token }
     })
     const project = await res.json()
+    if (!res.ok) throw new Error(project.message || res.statusText)
     return {
       id: project.id,
       name: project.name,
-      fullname: project.fullname,
+      fullname: project.name_with_namespace,
       description: project.description,
       avatar: project.avatar_url
-      // TODO: Add schema
     }
+  }
+
+  getSchema = async (projectId) => {
+    // Fetch schema
+    const token = window.store.getState().user.token
+    const url = prefix + '/projects/' + projectId +
+      '/repository/files/.gitcms?ref=master'
+    const res = await fetch(url, {
+      headers: { Authorization: 'Bearer ' + token }
+    })
+    const schema = await res.json()
+    if (!res.ok) throw new Error(schema.message || res.statusText)
+    return JSON.parse(window.atob(schema.content))
   }
 
 }

@@ -3,5 +3,6 @@ import autoReducer from 'src/util/autoReducer'
 
 export default combineReducers({
   list: autoReducer('getProjects'),
-  current: autoReducer('setProject')
+  current: autoReducer('getProject'),
+  currentSchema: autoReducer('getSchema')
 })

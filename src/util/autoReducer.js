@@ -2,7 +2,10 @@ export const wrapAction = (actionType, promise) => (dispatch) => {
   dispatch({ type: actionType + '/loading' })
   return promise.then(
     (payload) => dispatch({ type: actionType + '/success', payload }),
-    (error) => dispatch({ type: actionType + '/error', error })
+    (error) => {
+      dispatch({ type: actionType + '/error', payload: error.message })
+      return Promise.reject(error)
+    }
   )
 }
 

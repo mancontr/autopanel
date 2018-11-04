@@ -1,10 +1,14 @@
 {
   "dashboard": "Escritorio",
   "entities": "Entidades",
+  "entities.error": "No se ha podido cargar el esquema del proyecto",
   "loading": "Cargando ...",
   "login": "Iniciar sesión",
   "login.choose": "Selecciona un proveedor:",
   "logout": "Cerrar sesión",
+  "project.error": "No se ha podido cargar el proyecto",
+  "project.configured.error": "Este proyecto no parece tener un esquema asociado.",
+  "project.configured.ok": "El esquema de este proyecto contiene {n} entidades.",
   "projects": "Proyectos",
   "settings": "Ajustes"
 }

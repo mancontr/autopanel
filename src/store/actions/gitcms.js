@@ -19,8 +19,16 @@ export const getProjects = () => (dispatch, getState) => {
   return dispatch(wrapAction('getProjects', provider.getProjects()))
 }
 
-export const setProject = (projectId) => (dispatch, getState) => {
+export const getProject = (projectId) => (dispatch, getState) => {
   const state = getState()
   const provider = Config.getProvider(state.user.userinfo.provider)
-  return dispatch(wrapAction('setProject', provider.getProject(projectId)))
+  return dispatch(wrapAction('getProject', provider.getProject(projectId)))
 }
+
+export const getSchema = (projectId) => (dispatch, getState) => {
+  const state = getState()
+  const provider = Config.getProvider(state.user.userinfo.provider)
+  return dispatch(wrapAction('getSchema', provider.getSchema(projectId)))
+}
+
+export const abortSchema = () => ({ type: 'getSchema/error' })

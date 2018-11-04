@@ -3,17 +3,25 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import Menu from 'src/gitcms/components/Menu'
-import { setProject } from 'src/store/actions/gitcms'
+import { getProject, getSchema, abortSchema } from 'src/store/actions/gitcms'
 import './ProjectLayout.sass'
 
 export class ProjectLayout extends React.Component {
   static propTypes = {
     children: PropTypes.element,
-    params: PropTypes.object.isRequired
+    params: PropTypes.object.isRequired,
+    getProject: PropTypes.func.isRequired,
+    getSchema: PropTypes.func.isRequired,
+    abortSchema: PropTypes.func.isRequired
   }
 
   componentDidMount = () => {
-    this.props.setProject(this.props.params.projectId)
+    const projectId = this.props.params.projectId
+    this.props.getProject(projectId)
+      .then(
+        () => this.props.getSchema(projectId),
+        () => this.props.abortSchema()
+      )
   }
 
   render = () => (
@@ -26,4 +34,6 @@ export class ProjectLayout extends React.Component {
   )
 }
 
-export default connect(null, { setProject })(ProjectLayout)
+export default connect(null, {
+  getProject, getSchema, abortSchema
+})(ProjectLayout)
