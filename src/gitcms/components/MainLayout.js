@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
 
+import ErrorBoundary from 'src/gitcms/components/ErrorBoundary'
 import Header from './Header'
 import Login from './Login'
 import './MainLayout.sass'
@@ -20,10 +21,12 @@ export class MainLayout extends React.Component {
         <link rel="icon" type="image/png" href="/favicon.png" />
       </Helmet>
       <div id="main-layout">
-        <Header />
-        <div id="content">
-          {this.props.user ? this.props.children : <Login />}
-        </div>
+        <ErrorBoundary>
+          <Header />
+          <div id="content">
+            {this.props.user ? this.props.children : <Login />}
+          </div>
+        </ErrorBoundary>
       </div>
     </React.Fragment>
   )

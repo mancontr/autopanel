@@ -2,6 +2,8 @@
   "dashboard": "Escritorio",
   "entities": "Entidades",
   "entities.error": "No se ha podido cargar el esquema del proyecto",
+  "error.1": "Se ha producido un error.",
+  "error.2": "Por favor, recargue la página.",
   "loading": "Cargando ...",
   "login": "Iniciar sesión",
   "login.choose": "Selecciona un proveedor:",
