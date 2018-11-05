@@ -40,12 +40,37 @@ class Demo {
     if (projectId === demoProject.id) {
       return Promise.resolve({
         entities: [
-          { name: 'post', label: 'Post' },
-          { name: 'page', label: 'Page' }
+          {
+            name: 'post',
+            label: 'Post',
+            storage: { type: 'single_file', file: '/posts.json' }
+          }, {
+            name: 'page',
+            label: 'Page',
+            storage: { type: 'single_file', file: '/pages.json' }
+          }
         ]
       })
     }
     return Promise.reject(Error('404 File not found'))
+  }
+
+  getFile = (projectId, path) => {
+    return Promise.resolve([
+      {
+        title: 'Demo Post',
+        content: 'This is some <b>text</b>.',
+        date: 1541449329000
+      }, {
+        title: 'Another post',
+        content: 'Moar <b>text</b>.',
+        date: 1521999029000
+      }, {
+        title: 'Last post',
+        content: 'Yay!',
+        date: 1532473568000
+      }
+    ])
   }
 
 }

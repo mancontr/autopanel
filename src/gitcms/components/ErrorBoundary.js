@@ -8,16 +8,16 @@ class ErrorBoundary extends React.Component {
     children: PropTypes.any
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = { hasError: false }
   }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError () {
     return { hasError: true }
   }
 
-  render() {
+  render () {
     if (this.state.hasError) {
       return (
         <div className="page-error">

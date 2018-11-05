@@ -5,7 +5,9 @@ import ProjectLayout from 'src/gitcms/components/ProjectLayout'
 import ProjectPicker from 'src/gitcms/components/ProjectPicker'
 import ProviderCallback from 'src/gitcms/components/ProviderCallback'
 import Dashboard from 'src/gitcms/components/Dashboard'
-import Entities from 'src/gitcms/components/Entities'
+import EntitySection from 'src/gitcms/components/EntitySection'
+import EntityTypes from 'src/gitcms/components/EntityTypes'
+import EntityList from 'src/gitcms/components/EntityList'
 import Settings from 'src/gitcms/components/Settings'
 
 const createRoutes = () => (
@@ -15,7 +17,10 @@ const createRoutes = () => (
       <IndexRoute component={ProjectPicker} />
       <Route path="/project/:projectId" component={ProjectLayout}>
         <IndexRoute component={Dashboard} />
-        <Route path="entities" component={Entities} />
+        <Route path="entities" component={EntitySection}>
+          <IndexRoute component={EntityTypes} />
+          <Route path=":entityType" component={EntityList} />
+        </Route>
         <Route path="settings" component={Settings} />
       </Route>
     </Route>

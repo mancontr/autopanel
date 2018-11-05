@@ -32,3 +32,14 @@ export const getSchema = (projectId) => (dispatch, getState) => {
 }
 
 export const abortSchema = () => ({ type: 'getSchema/error' })
+
+export const getEntityList = (entityType) => (dispatch, getState) => {
+  const state = getState()
+  const provider = Config.getProvider(state.user.userinfo.provider)
+  const project = state.projects.current.value
+  const schema = state.projects.currentSchema.value
+  const entitySchema = schema.entities.find((e) => e.name === entityType)
+  const storage = Config.getStorage(entitySchema.storage.type)
+  return dispatch(wrapAction('getEntityList',
+    storage.getEntityList(provider, project, entitySchema)))
+}

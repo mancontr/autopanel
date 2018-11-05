@@ -71,17 +71,19 @@ class Gitlab {
     }
   }
 
-  getSchema = async (projectId) => {
-    // Fetch schema
+  getSchema = async (projectId) => this.getFile(projectId, '.gitcms')
+
+  getFile = async (projectId, path) => {
     const token = window.store.getState().user.token
+    const encodedPath = encodeURIComponent(path)
     const url = prefix + '/projects/' + projectId +
-      '/repository/files/.gitcms?ref=master'
+      '/repository/files/' + encodedPath + '?ref=master'
     const res = await fetch(url, {
       headers: { Authorization: 'Bearer ' + token }
     })
-    const schema = await res.json()
-    if (!res.ok) throw new Error(schema.message || res.statusText)
-    return JSON.parse(window.atob(schema.content))
+    const file = await res.json()
+    if (!res.ok) throw new Error(file.message || res.statusText)
+    return JSON.parse(window.atob(file.content))
   }
 
 }

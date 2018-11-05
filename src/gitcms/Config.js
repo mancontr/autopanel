@@ -1,24 +1,39 @@
 const providers = require.context('./providers', true, /^(.*\.(js$))[^.]*$/im)
-const types = require.context('./types', true, /^(.*\.(js$))[^.]*$/im)
+const storages = require.context('./storages', true, /^(.*\.(js$))[^.]*$/im)
+// const types = require.context('./types', true, /^(.*\.(js$))[^.]*$/im)
 
-const config = { providers: {}, types: [] }
+const config = {
+  providers: {},
+  storages: {},
+  types: {}
+}
 
+const ret = {}
 // Provider handling functions
-config.registerProvider = (provider) => {
+ret.registerProvider = (provider) => {
   config.providers[provider.getId()] = provider
 }
-config.getProvider = (id) => config.providers[id]
-config.getProviders = () => Object.keys(config.providers)
+ret.getProvider = (id) => config.providers[id]
+ret.getProviders = () => Object.keys(config.providers)
+
+// Storage handling functions
+ret.registerStorage = (storage) => {
+  config.storages[storage.getId()] = storage
+}
+ret.getStorage = (id) => config.storages[id]
 
 // Type handling functions
-config.registerType = (type) =>
-  config.types.push(type)
+ret.registerType = (type) => {
+  config.types[type.getId()] = type
+}
+ret.getType = (id) => config.types[id]
 
 // Auto-register all internal providers and types
 providers.keys().forEach(k => {
   const Provider = providers(k).default
-  config.registerProvider(new Provider())
+  ret.registerProvider(new Provider())
 })
-types.keys().forEach(k => config.registerType(types(k).default))
+storages.keys().forEach(k => ret.registerStorage(storages(k).default))
+// types.keys().forEach(k => ret.registerType(types(k).default))
 
-export default config
+export default ret
