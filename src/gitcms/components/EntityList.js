@@ -3,7 +3,9 @@ import PropTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
 import { getEntityList } from 'src/store/actions/gitcms'
-// import './Dashboard.sass'
+import './EntityList.sass'
+
+const defaultColumns = [ 'id', 'title', 'name', 'slug', 'date' ]
 
 export class EntityList extends React.Component {
   static propTypes = {
@@ -20,13 +22,27 @@ export class EntityList extends React.Component {
   }
 
   renderEntityList = (entityType) => {
+    const fieldMap = {}
+    entityType.fields.forEach((f) => { fieldMap[f.name] = f })
+    const columns = (entityType.columns || defaultColumns)
+      .filter((c) => fieldMap[c])
     return (
       <table>
+        <thead>
+          <tr>
+            <th>Nº</th>
+            {columns.map((col) => (
+              <th key={col}>{fieldMap[col].label}</th>
+            ))}
+          </tr>
+        </thead>
         <tbody>
           {this.props.entities.value.map((entity, i) => (
             <tr key={i}>
               <td>{i + 1}</td>
-              <td>{entity.name || entity.title}</td>
+              {columns.map((col) => (
+                <td key={col}>{entity[col]}</td>
+              ))}
             </tr>
           ))}
         </tbody>

@@ -38,16 +38,34 @@ class Demo {
 
   getSchema = (projectId) => {
     if (projectId === demoProject.id) {
+      const fields = [
+        {
+          'type': 'text',
+          'name': 'title',
+          'label': 'Title',
+          'placeholder': 'Title...'
+        }, {
+          'type': 'text',
+          'name': 'content',
+          'label': 'Content'
+        }, {
+          'type': 'date',
+          'name': 'date',
+          'label': 'Date'
+        }
+      ]
       return Promise.resolve({
         entities: [
           {
             name: 'post',
             label: 'Post',
-            storage: { type: 'single_file', file: '/posts.json' }
+            storage: { type: 'single_file', file: '/posts.json' },
+            fields
           }, {
             name: 'page',
             label: 'Page',
-            storage: { type: 'single_file', file: '/pages.json' }
+            storage: { type: 'single_file', file: '/pages.json' },
+            fields
           }
         ]
       })
