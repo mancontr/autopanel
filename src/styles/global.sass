@@ -4,6 +4,9 @@ h1
   margin: 0
   padding: 9px 0 4px
 
+main
+  padding: 9px 22px
+
 .box
   background: #fff
   border: 1px solid #e5e5e5
@@ -11,6 +14,30 @@ h1
   margin: 16px 0
   padding: 23px 10px
 
-main
-  padding: 9px 22px
+  &.withTable
+    padding: 0
 
+table
+  border-collapse: collapse
+  width: 100%
+
+td, th
+  border: 0
+  padding: 8px 10px
+  text-align: left
+  white-space: nowrap
+
+td:last-child
+  width: 100%
+
+thead tr
+  border-bottom: 1px solid #e1e1e1
+
+tbody tr:nth-child(odd)
+  background-color: #f9f9f9
+
+a
+  color: #0073aa
+  text-decoration: none
+  &:hover
+    color: #00a0d2

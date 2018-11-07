@@ -13,23 +13,37 @@ export class EntityTypes extends React.Component {
 
   renderEntityList = () => {
     const schema = this.props.schema.value
+    const prefix = '/project/' + this.props.params.projectId + '/entities/'
     return (
-      <ul className="entities">
-        {schema.entities.map((entity) => (
-          <li className="entity" key={entity.name}>
-            <Link to={'/project/' + this.props.params.projectId + '/entities/' + entity.name}>
-              {entity.label || entity.name}
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <table className="entities">
+        <thead>
+          <tr>
+            <th><FormattedMessage id="entities.entity" /></th>
+            <th><FormattedMessage id="entities.description" /></th>
+          </tr>
+        </thead>
+        <tbody>
+          {schema.entities.map((entity) => (
+            <tr className="entity" key={entity.name}>
+              <td>
+                <Link to={prefix + entity.name}>
+                  {entity.label || entity.name}
+                </Link>
+              </td>
+              <td>
+                {entity.description}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     )
   }
 
   render = () => (
     <div id="entities">
       <h1><FormattedMessage id="entities" /></h1>
-      <div className="box">
+      <div className="box withTable">
         {this.renderEntityList()}
       </div>
     </div>

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
 import { getEntityList } from 'src/store/actions/gitcms'
-import './EntityList.sass'
+// import './EntityList.sass'
 
 const defaultColumns = [ 'id', 'title', 'name', 'slug', 'date' ]
 
@@ -70,7 +70,7 @@ export class EntityList extends React.Component {
     return (
       <div id="entities">
         <h1>{entityType.label || entityType.name}</h1>
-        <div className="box">
+        <div className="box withTable">
           {this.renderEntityList(entityType)}
         </div>
       </div>

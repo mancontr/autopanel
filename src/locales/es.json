@@ -1,6 +1,8 @@
 {
   "dashboard": "Escritorio",
   "entities": "Entidades",
+  "entities.description": "Descripción",
+  "entities.entity": "Entidad",
   "entities.error": "No se ha podido cargar el esquema del proyecto",
   "error.1": "Se ha producido un error.",
   "error.2": "Por favor, recargue la página.",

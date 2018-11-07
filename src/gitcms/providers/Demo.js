@@ -59,11 +59,13 @@ class Demo {
           {
             name: 'post',
             label: 'Post',
+            description: 'Each publication on the blog.',
             storage: { type: 'single_file', file: '/posts.json' },
             fields
           }, {
             name: 'page',
             label: 'Page',
+            description: 'Static pages or sections.',
             storage: { type: 'single_file', file: '/pages.json' },
             fields
           }
