@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
+import Config from 'src/gitcms/Config'
 import { getEntityList } from 'src/store/actions/gitcms'
 // import './EntityList.sass'
 
@@ -19,6 +20,13 @@ export class EntityList extends React.Component {
     if (this.props.schema.isSuccess) {
       this.props.getEntityList(this.props.params.entityType)
     }
+  }
+
+  renderCell = (fieldType, value) => {
+    const type = Config.getType(fieldType.type)
+    if (!type) return false
+    const Viewer = type.view
+    return <Viewer value={value} />
   }
 
   renderEntityList = (entityType) => {
@@ -41,7 +49,9 @@ export class EntityList extends React.Component {
             <tr key={i}>
               <td>{i + 1}</td>
               {columns.map((col) => (
-                <td key={col}>{entity[col]}</td>
+                <td key={col}>
+                  {this.renderCell(fieldMap[col], entity[col])}
+                </td>
               ))}
             </tr>
           ))}

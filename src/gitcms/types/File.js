@@ -27,6 +27,7 @@ FileTypeViewer.propTypes = {
 }
 
 export default {
+  name: 'file',
   view: FileTypeViewer,
   edit: FileTypeEditor
 }

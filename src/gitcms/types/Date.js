@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-class TextTypeEditor extends React.Component {
+class DateTypeEditor extends React.Component {
 
   static propTypes = {
     field: PropTypes.object.isRequired,
@@ -17,16 +17,16 @@ class TextTypeEditor extends React.Component {
 
 }
 
-const TextTypeViewer = (props) => (
-  <span>{props.value}</span>
+const DateTypeViewer = (props) => (
+  <span>{new Date(props.value).toLocaleString()}</span>
 )
 
-TextTypeViewer.propTypes = {
+DateTypeViewer.propTypes = {
   value: PropTypes.any
 }
 
 export default {
-  name: 'text',
-  view: TextTypeViewer,
-  edit: TextTypeEditor
+  name: 'date',
+  view: DateTypeViewer,
+  edit: DateTypeEditor
 }

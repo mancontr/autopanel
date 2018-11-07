@@ -1,6 +1,6 @@
 const providers = require.context('./providers', true, /^(.*\.(js$))[^.]*$/im)
 const storages = require.context('./storages', true, /^(.*\.(js$))[^.]*$/im)
-// const types = require.context('./types', true, /^(.*\.(js$))[^.]*$/im)
+const types = require.context('./types', true, /^(.*\.(js$))[^.]*$/im)
 
 const config = {
   providers: {},
@@ -24,7 +24,7 @@ ret.getStorage = (id) => config.storages[id]
 
 // Type handling functions
 ret.registerType = (type) => {
-  config.types[type.getId()] = type
+  config.types[type.name] = type
 }
 ret.getType = (id) => config.types[id]
 
@@ -34,6 +34,6 @@ providers.keys().forEach(k => {
   ret.registerProvider(new Provider())
 })
 storages.keys().forEach(k => ret.registerStorage(storages(k).default))
-// types.keys().forEach(k => ret.registerType(types(k).default))
+types.keys().forEach(k => ret.registerType(types(k).default))
 
 export default ret
