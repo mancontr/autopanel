@@ -45,11 +45,21 @@ export class ProjectPicker extends React.Component {
       content = <FormattedMessage id="projects.error" />
     }
     if (this.props.projects.isSuccess) {
-      content = (
-        <div className="projects">
-          {this.props.projects.value.map(this.renderProject)}
-        </div>
-      )
+      const projects = this.props.projects.value
+      if (projects.length) {
+        content = (
+          <div className="projects">
+            {projects.map(this.renderProject)}
+          </div>
+        )
+      } else {
+        content = (
+          <div>
+            <div><FormattedMessage id="projects.empty" /></div>
+            <div><FormattedMessage id="projects.empty2" /></div>
+          </div>
+        )
+      }
     }
 
     return (
