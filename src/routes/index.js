@@ -8,6 +8,7 @@ import Dashboard from 'src/gitcms/components/Dashboard'
 import EntitySection from 'src/gitcms/components/EntitySection'
 import EntityTypes from 'src/gitcms/components/EntityTypes'
 import EntityList from 'src/gitcms/components/EntityList'
+import EntityEdit from 'src/gitcms/components/EntityEdit'
 import Settings from 'src/gitcms/components/Settings'
 
 const createRoutes = () => (
@@ -20,6 +21,7 @@ const createRoutes = () => (
         <Route path="entities" component={EntitySection}>
           <IndexRoute component={EntityTypes} />
           <Route path=":entityType" component={EntityList} />
+          <Route path=":entityType/:entityId" component={EntityEdit} />
         </Route>
         <Route path="settings" component={Settings} />
       </Route>

@@ -51,7 +51,8 @@ class Demo {
         }, {
           'type': 'date',
           'name': 'date',
-          'label': 'Date'
+          'label': 'Date',
+          'description': 'The publication date of this article.'
         }
       ]
       return Promise.resolve({

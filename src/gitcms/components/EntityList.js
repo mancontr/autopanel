@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
+import { Link } from 'react-router'
 import Config from 'src/gitcms/Config'
 import { getEntityList } from 'src/store/actions/gitcms'
 // import './EntityList.sass'
@@ -34,6 +35,8 @@ export class EntityList extends React.Component {
     entityType.fields.forEach((f) => { fieldMap[f.name] = f })
     const columns = (entityType.columns || defaultColumns)
       .filter((c) => fieldMap[c])
+    const prefix = '/project/' + this.props.params.projectId +
+      '/entities/' + entityType.name + '/'
     return (
       <table>
         <thead>
@@ -47,7 +50,11 @@ export class EntityList extends React.Component {
         <tbody>
           {this.props.entities.value.map((entity, i) => (
             <tr key={i}>
-              <td>{i + 1}</td>
+              <td>
+                <Link to={prefix + i}>
+                  {i + 1}
+                </Link>
+              </td>
               {columns.map((col) => (
                 <td key={col}>
                   {this.renderCell(fieldMap[col], entity[col])}
