@@ -51,7 +51,7 @@ export class EntityList extends React.Component {
           {this.props.entities.value.map((entity, i) => (
             <tr key={i}>
               <td>
-                <Link to={prefix + i}>
+                <Link to={prefix + (i + 1)}>
                   {i + 1}
                 </Link>
               </td>

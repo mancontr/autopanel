@@ -50,7 +50,7 @@ export class EntityList extends React.Component {
     }
 
     const id = this.props.params.entityId
-    const entity = this.props.entities.value[id]
+    const entity = this.props.entities.value[id - 1]
 
     return (
       <div id="entity-edit">
