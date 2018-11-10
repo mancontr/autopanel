@@ -5,14 +5,15 @@ class TextTypeEditor extends React.Component {
 
   static propTypes = {
     field: PropTypes.object.isRequired,
-    value: PropTypes.any
+    value: PropTypes.string,
+    onChange: PropTypes.func.isRequired
   }
 
   render = () => {
     const { field, value } = this.props
     return (
-      <input type="text" name={field.name} defaultValue={value}
-        placeholder={field.placeholder} />
+      <input type="text" name={field.name} placeholder={field.placeholder}
+        value={value} onChange={(e) => this.props.onChange(e.target.value)} />
     )
   }
 

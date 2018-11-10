@@ -5,14 +5,20 @@ class DateTypeEditor extends React.Component {
 
   static propTypes = {
     field: PropTypes.object.isRequired,
-    value: PropTypes.any
+    value: PropTypes.number,
+    onChange: PropTypes.func.isRequired
   }
 
   render = () => {
     const { field, value } = this.props
+    const formattedValue = new Date(value).toISOString().substring(0, 16)
+    const onChange = (e) => {
+      const newDate = Date.parse(e.target.value + ':00Z')
+      this.props.onChange(newDate.valueOf())
+    }
     return (
       <input type="datetime-local" name={field.name}
-        defaultValue={new Date(value).toISOString().substring(0, 16)} />
+        value={formattedValue} onChange={onChange} />
     )
   }
 
