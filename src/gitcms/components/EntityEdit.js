@@ -26,7 +26,11 @@ export class EntityList extends React.Component {
       if (!type) return false
       const Editor = type.edit
       return (
-        <div className="box" key={f.name}>
+        <div className="box field" key={f.name}>
+          <div className="label">{f.label || f.name}</div>
+          {f.description && (
+            <div className="description">{f.description}</div>
+          )}
           <Editor field={f} value={entity[f.name]} />
         </div>
       )
@@ -56,6 +60,9 @@ export class EntityList extends React.Component {
       <div id="entity-edit">
         <h1>{entityType.label || entityType.name} #{id}</h1>
         {this.renderFields(entityType, entity)}
+        <button className="save button" type="button">
+          <FormattedMessage id="save" />
+        </button>
       </div>
     )
   }

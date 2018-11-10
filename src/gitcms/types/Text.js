@@ -11,14 +11,8 @@ class TextTypeEditor extends React.Component {
   render = () => {
     const { field, value } = this.props
     return (
-      <div className="field">
-        <div className="label">{field.label || field.name}</div>
-        {field.description && (
-          <div className="description">{field.description}</div>
-        )}
-        <input type="text" name={field.name} defaultValue={value}
-          placeholder={field.placeholder} />
-      </div>
+      <input type="text" name={field.name} defaultValue={value}
+        placeholder={field.placeholder} />
     )
   }
 
