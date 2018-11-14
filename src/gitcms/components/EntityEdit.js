@@ -3,22 +3,22 @@ import PropTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
 import Config from 'src/gitcms/Config'
-import { getEntityList } from 'src/store/actions/gitcms'
+import { getEntity } from 'src/store/actions/gitcms'
 import './EntityEdit.sass'
 
-export class EntityList extends React.Component {
+export class EntityEdit extends React.Component {
   static propTypes = {
     schema: PropTypes.object.isRequired,
-    entities: PropTypes.object.isRequired,
+    entity: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired,
-    getEntityList: PropTypes.func.isRequired
+    getEntity: PropTypes.func.isRequired
   }
 
   componentDidMount = () => {
     if (this.props.schema.isSuccess) {
       const id = this.props.params.entityId
-      this.props.getEntityList(this.props.params.entityType)
-        .then((res) => this.setState({ entity: res.payload[id - 1] }))
+      this.props.getEntity(this.props.params.entityType, id)
+        .then((res) => this.setState({ entity: res.payload }))
     }
   }
 
@@ -53,13 +53,13 @@ export class EntityList extends React.Component {
   }
 
   render = () => {
-    if (this.props.entities.isLoading) {
+    if (this.props.entity.isLoading) {
       return <FormattedMessage id="loading" />
     }
-    if (this.props.entities.isError) {
+    if (this.props.entity.isError) {
       return <FormattedMessage id="entities.error" />
     }
-    if (!this.props.entities.isSuccess) {
+    if (!this.props.entity.isSuccess) {
       return false
     }
 
@@ -88,6 +88,6 @@ export class EntityList extends React.Component {
 
 const mapStateToProps = (state) => ({
   schema: state.projects.currentSchema || {},
-  entities: state.projects.currentEntities || {}
+  entity: state.projects.currentEntity || {}
 })
-export default connect(mapStateToProps, { getEntityList })(EntityList)
+export default connect(mapStateToProps, { getEntity })(EntityEdit)

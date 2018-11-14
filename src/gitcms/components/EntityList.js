@@ -41,18 +41,18 @@ export class EntityList extends React.Component {
       <table>
         <thead>
           <tr>
-            <th>Nº</th>
+            <th>ID</th>
             {columns.map((col) => (
               <th key={col}>{fieldMap[col].label}</th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {this.props.entities.value.map((entity, i) => (
-            <tr key={i}>
+          {this.props.entities.value.map((entity) => (
+            <tr key={entity.id}>
               <td>
-                <Link to={prefix + (i + 1)}>
-                  {i + 1}
+                <Link to={prefix + (entity.id)}>
+                  {entity.id}
                 </Link>
               </td>
               {columns.map((col) => (

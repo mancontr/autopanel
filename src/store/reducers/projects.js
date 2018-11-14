@@ -5,5 +5,6 @@ export default combineReducers({
   list: autoReducer('getProjects'),
   current: autoReducer('getProject'),
   currentSchema: autoReducer('getSchema'),
-  currentEntities: autoReducer('getEntityList')
+  currentEntities: autoReducer('getEntityList'),
+  currentEntity: autoReducer('getEntity')
 })
