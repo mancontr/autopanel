@@ -86,6 +86,25 @@ class Gitlab {
     return JSON.parse(window.atob(file.content))
   }
 
+  putFiles = async (projectId, actions) => {
+    const token = window.store.getState().user.token
+    const url = prefix + '/projects/' + projectId + '/repository/commits'
+    const res = await fetch(url, {
+      headers: {
+        Authorization: 'Bearer ' + token,
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        branch: 'master',
+        commit_message: 'Edited from GitCMS',
+        actions: actions
+      })
+    })
+    const ret = await res.json()
+    console.log('>>', ret)
+  }
+
 }
 
 export default Gitlab

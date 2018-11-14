@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
 import Config from 'src/gitcms/Config'
-import { getEntity } from 'src/store/actions/gitcms'
+import { getEntity, saveEntity } from 'src/store/actions/gitcms'
 import './EntityEdit.sass'
 
 export class EntityEdit extends React.Component {
@@ -11,7 +11,8 @@ export class EntityEdit extends React.Component {
     schema: PropTypes.object.isRequired,
     entity: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired,
-    getEntity: PropTypes.func.isRequired
+    getEntity: PropTypes.func.isRequired,
+    saveEntity: PropTypes.func.isRequired
   }
 
   componentDidMount = () => {
@@ -48,8 +49,9 @@ export class EntityEdit extends React.Component {
   }
 
   handleSave = () => {
-    console.log('Save:', this.state.entity)
-    this.setState({ modified: false })
+    const id = this.props.params.entityId
+    this.props.saveEntity(this.props.params.entityType, id, this.state.entity)
+      .then(() => this.setState({ modified: false }))
   }
 
   render = () => {
@@ -90,4 +92,4 @@ const mapStateToProps = (state) => ({
   schema: state.projects.currentSchema || {},
   entity: state.projects.currentEntity || {}
 })
-export default connect(mapStateToProps, { getEntity })(EntityEdit)
+export default connect(mapStateToProps, { getEntity, saveEntity })(EntityEdit)

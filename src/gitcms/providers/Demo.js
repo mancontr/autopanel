@@ -94,6 +94,8 @@ class Demo {
     ])
   }
 
+  putFiles = () => Promise.resolve()
+
 }
 
 export default Demo

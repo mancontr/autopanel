@@ -54,3 +54,14 @@ export const getEntity = (entityType, id) => (dispatch, getState) => {
   return dispatch(wrapAction('getEntity',
     storage.getEntity(provider, project, entitySchema, id)))
 }
+
+export const saveEntity = (entityType, id, entity, extraFiles) => (dispatch, getState) => {
+  const state = getState()
+  const provider = Config.getProvider(state.user.userinfo.provider)
+  const project = state.projects.current.value
+  const schema = state.projects.currentSchema.value
+  const entitySchema = schema.entities.find((e) => e.name === entityType)
+  const storage = Config.getStorage(entitySchema.storage.type)
+  return dispatch(wrapAction('saveEntity',
+    storage.saveEntity(provider, project, entitySchema, id, entity, extraFiles)))
+}
