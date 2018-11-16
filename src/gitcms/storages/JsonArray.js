@@ -24,6 +24,31 @@ export default {
       content: JSON.stringify(data)
     } ]
     return provider.putFiles(project.id, actions)
+  },
+
+  createEntity: async (provider, project, entitySchema, entity, extraActions = []) => {
+    const path = entitySchema.storage.file
+    const data = await provider.getFile(project.id, path)
+    data.push(entity)
+    const actions = [ ...extraActions, {
+      action: 'update',
+      file_path: path,
+      content: JSON.stringify(data)
+    } ]
+    await provider.putFiles(project.id, actions)
+    return { ...entity, id: data.length }
+  },
+
+  removeEntity: async (provider, project, entitySchema, id) => {
+    const path = entitySchema.storage.file
+    const data = await provider.getFile(project.id, path)
+    data.splice(id - 1, 1)
+    const actions = [{
+      action: 'update',
+      file_path: path,
+      content: JSON.stringify(data)
+    }]
+    return provider.putFiles(project.id, actions)
   }
 
 }

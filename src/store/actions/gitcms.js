@@ -65,3 +65,25 @@ export const saveEntity = (entityType, id, entity, extraFiles) => (dispatch, get
   return dispatch(wrapAction('saveEntity',
     storage.saveEntity(provider, project, entitySchema, id, entity, extraFiles)))
 }
+
+export const createEntity = (entityType, id, entity, extraFiles) => (dispatch, getState) => {
+  const state = getState()
+  const provider = Config.getProvider(state.user.userinfo.provider)
+  const project = state.projects.current.value
+  const schema = state.projects.currentSchema.value
+  const entitySchema = schema.entities.find((e) => e.name === entityType)
+  const storage = Config.getStorage(entitySchema.storage.type)
+  return dispatch(wrapAction('createEntity',
+    storage.createEntity(provider, project, entitySchema, id, entity, extraFiles)))
+}
+
+export const removeEntity = (entityType, id) => (dispatch, getState) => {
+  const state = getState()
+  const provider = Config.getProvider(state.user.userinfo.provider)
+  const project = state.projects.current.value
+  const schema = state.projects.currentSchema.value
+  const entitySchema = schema.entities.find((e) => e.name === entityType)
+  const storage = Config.getStorage(entitySchema.storage.type)
+  return dispatch(wrapAction('removeEntity',
+    storage.removeEntity(provider, project, entitySchema, id)))
+}

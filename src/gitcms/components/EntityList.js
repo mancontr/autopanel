@@ -14,6 +14,7 @@ export class EntityList extends React.Component {
     schema: PropTypes.object.isRequired,
     entities: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired,
+    router: PropTypes.object.isRequired,
     getEntityList: PropTypes.func.isRequired
   }
 
@@ -21,6 +22,13 @@ export class EntityList extends React.Component {
     if (this.props.schema.isSuccess) {
       this.props.getEntityList(this.props.params.entityType)
     }
+  }
+
+  handleNew = () => {
+    const { entityType, projectId } = this.props.params
+    this.props.router.push(
+      '/project/' + projectId + '/entities/' + entityType + '/new'
+    )
   }
 
   renderCell = (fieldType, value) => {
@@ -90,6 +98,9 @@ export class EntityList extends React.Component {
         <div className="box withTable">
           {this.renderEntityList(entityType)}
         </div>
+        <button type="button" className="new button" onClick={this.handleNew}>
+          <FormattedMessage id="entities.new" />
+        </button>
       </div>
     )
   }

@@ -22,6 +22,7 @@ const createRoutes = () => (
           <IndexRoute component={EntityTypes} />
           <Route path=":entityType">
             <IndexRoute component={EntityList} />
+            <Route path="new" component={EntityEdit} />
             <Route path=":entityId" component={EntityEdit} />
           </Route>
         </Route>

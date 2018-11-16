@@ -13,7 +13,9 @@ class TextTypeEditor extends React.Component {
     const { field, value } = this.props
     return (
       <input type="text" name={field.name} placeholder={field.placeholder}
-        value={value} onChange={(e) => this.props.onChange(e.target.value)} />
+        value={value || ''}
+        onChange={(e) => this.props.onChange(e.target.value)}
+      />
     )
   }
 

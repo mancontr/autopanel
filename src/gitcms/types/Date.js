@@ -11,7 +11,8 @@ class DateTypeEditor extends React.Component {
 
   render = () => {
     const { field, value } = this.props
-    const formattedValue = new Date(value).toISOString().substring(0, 16)
+    const date = value !== undefined ? new Date(value) : new Date()
+    const formattedValue = date.toISOString().substring(0, 16)
     const onChange = (e) => {
       const newDate = Date.parse(e.target.value + ':00Z')
       this.props.onChange(newDate.valueOf())

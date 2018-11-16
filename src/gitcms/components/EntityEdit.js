@@ -3,7 +3,9 @@ import PropTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
 import Config from 'src/gitcms/Config'
-import { getEntity, saveEntity } from 'src/store/actions/gitcms'
+import {
+  getEntity, createEntity, saveEntity, removeEntity
+} from 'src/store/actions/gitcms'
 import './EntityEdit.sass'
 
 export class EntityEdit extends React.Component {
@@ -11,13 +13,23 @@ export class EntityEdit extends React.Component {
     schema: PropTypes.object.isRequired,
     entity: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired,
+    router: PropTypes.object.isRequired,
     getEntity: PropTypes.func.isRequired,
-    saveEntity: PropTypes.func.isRequired
+    createEntity: PropTypes.func.isRequired,
+    saveEntity: PropTypes.func.isRequired,
+    removeEntity: PropTypes.func.isRequired
   }
 
   componentDidMount = () => {
     if (this.props.schema.isSuccess) {
       const id = this.props.params.entityId
+      if (!id) {
+        this.setState({ entity: {
+          isSuccess: true,
+          value: {}
+        } })
+        return
+      }
       this.props.getEntity(this.props.params.entityType, id)
         .then((res) => this.setState({ entity: res.payload }))
     }
@@ -49,20 +61,44 @@ export class EntityEdit extends React.Component {
   }
 
   handleSave = () => {
-    const id = this.props.params.entityId
-    this.props.saveEntity(this.props.params.entityType, id, this.state.entity)
-      .then(() => this.setState({ modified: false }))
+    const { entityId, entityType, projectId } = this.props.params
+    const isNew = entityId === undefined
+    if (isNew) {
+      this.props.createEntity(entityType, this.state.entity)
+        .then((action) => {
+          const id = action.payload.id
+          this.props.router.push(
+            '/project/' + projectId + '/entities/' + entityType + '/' + id
+          )
+        })
+    } else {
+      this.props.saveEntity(entityType, entityId, this.state.entity)
+        .then(() => this.setState({ modified: false }))
+    }
+  }
+
+  handleRemove = () => {
+    const { entityId, entityType, projectId } = this.props.params
+    this.props.removeEntity(entityType, entityId)
+      .then(() => this.props.router.push(
+        '/project/' + projectId + '/entities/' + entityType
+      ))
   }
 
   render = () => {
-    if (this.props.entity.isLoading) {
-      return <FormattedMessage id="loading" />
-    }
-    if (this.props.entity.isError) {
-      return <FormattedMessage id="entities.error" />
-    }
-    if (!this.props.entity.isSuccess) {
-      return false
+    const id = this.props.params.entityId
+    const isNew = id === undefined
+
+    if (!isNew) {
+      if (this.props.entity.isLoading) {
+        return <FormattedMessage id="loading" />
+      }
+      if (this.props.entity.isError) {
+        return <FormattedMessage id="entities.error" />
+      }
+      if (!this.props.entity.isSuccess) {
+        return false
+      }
     }
 
     const entityType = this.props.schema.value.entities
@@ -71,18 +107,31 @@ export class EntityEdit extends React.Component {
       return <FormattedMessage id="entities.unknown" />
     }
 
-    const id = this.props.params.entityId
     const entity = this.state && this.state.entity
     if (!entity) return false
 
+    const titleValues = {
+      type: entityType.label || entityType.name,
+      id: id
+    }
+
     return (
       <div id="entity-edit">
-        <h1>{entityType.label || entityType.name} #{id}</h1>
+
+        <h1>
+          <FormattedMessage id={'entities.title.' + (isNew ? 'create' : 'edit')}
+            values={titleValues} />
+        </h1>
         {this.renderFields(entityType)}
         <button className="save button" type="button" onClick={this.handleSave}
           disabled={!this.state.modified}>
           <FormattedMessage id={this.state.modified ? 'save' : 'saved'} />
         </button>
+        {!isNew && (
+          <span className="remove" onClick={this.handleRemove}>
+            <FormattedMessage id="remove" />
+          </span>
+        )}
       </div>
     )
   }
@@ -92,4 +141,6 @@ const mapStateToProps = (state) => ({
   schema: state.projects.currentSchema || {},
   entity: state.projects.currentEntity || {}
 })
-export default connect(mapStateToProps, { getEntity, saveEntity })(EntityEdit)
+export default connect(mapStateToProps, {
+  getEntity, createEntity, saveEntity, removeEntity
+})(EntityEdit)
