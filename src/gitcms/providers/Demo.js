@@ -12,6 +12,33 @@ const badProject = {
   description: 'A project lacking an schema, thus not usable with gitcms.'
 }
 
+const files = {
+  '/posts.json': [
+    {
+      title: 'Demo Post',
+      content: 'This is some <b>text</b>.',
+      date: 1541449329000
+    }, {
+      title: 'Another post',
+      content: 'Moar <b>text</b>.',
+      date: 1521999029000
+    }, {
+      title: 'Last post',
+      content: 'Yay!',
+      date: 1532473568000
+    }
+  ],
+  '/authors.json': [
+    {
+      name: 'William',
+      bio: 'Love all, trust a few, do wrong to none.'
+    }, {
+      name: 'Edgar',
+      bio: 'I became insane, with long intervals of horrible sanity.'
+    }
+  ]
+}
+
 class Demo {
 
   getId = () => 'demo'
@@ -91,38 +118,20 @@ class Demo {
   }
 
   getFile = (projectId, path) => {
-    if (path === '/posts.json') {
-      return Promise.resolve([
-        {
-          title: 'Demo Post',
-          content: 'This is some <b>text</b>.',
-          date: 1541449329000
-        }, {
-          title: 'Another post',
-          content: 'Moar <b>text</b>.',
-          date: 1521999029000
-        }, {
-          title: 'Last post',
-          content: 'Yay!',
-          date: 1532473568000
-        }
-      ])
-    } else if (path === '/authors.json') {
-      return Promise.resolve([
-        {
-          name: 'William',
-          bio: 'Love all, trust a few, do wrong to none.'
-        }, {
-          name: 'Edgar',
-          bio: 'I became insane, with long intervals of horrible sanity.'
-        }
-      ])
-    } else {
-      return Promise.reject(Error('404 File not found'))
-    }
+    if (files[path]) return Promise.resolve(files[path])
+    return Promise.reject(Error('404 File not found'))
   }
 
-  putFiles = () => Promise.resolve()
+  putFiles = (projectId, actions) => {
+    actions.forEach((action) => {
+      if (action.action === 'delete') {
+        files[action.file_path] = null
+      } else {
+        files[action.file_path] = JSON.parse(action.content)
+      }
+    })
+    return Promise.resolve()
+  }
 
 }
 
