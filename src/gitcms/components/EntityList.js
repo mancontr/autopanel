@@ -20,7 +20,18 @@ export class EntityList extends React.Component {
 
   componentDidMount = () => {
     if (this.props.schema.isSuccess) {
-      this.props.getEntityList(this.props.params.entityType)
+      this.loadedType = this.props.params.entityType
+      this.props.getEntityList(this.loadedType)
+    }
+  }
+
+  componentDidUpdate = () => {
+    if (this.props.schema.isSuccess) {
+      const newType = this.props.params.entityType
+      if (this.loadedType !== newType) {
+        this.loadedType = newType
+        this.props.getEntityList(newType)
+      }
     }
   }
 
