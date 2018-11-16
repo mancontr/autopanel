@@ -38,23 +38,6 @@ class Demo {
 
   getSchema = (projectId) => {
     if (projectId === demoProject.id) {
-      const fields = [
-        {
-          'type': 'text',
-          'name': 'title',
-          'label': 'Title',
-          'placeholder': 'Title...'
-        }, {
-          'type': 'text',
-          'name': 'content',
-          'label': 'Content'
-        }, {
-          'type': 'date',
-          'name': 'date',
-          'label': 'Date',
-          'description': 'The publication date of this article.'
-        }
-      ]
       return Promise.resolve({
         entities: [
           {
@@ -62,13 +45,44 @@ class Demo {
             label: 'Post',
             description: 'Each publication on the blog.',
             storage: { type: 'single_file', file: '/posts.json' },
-            fields
+            fields: [
+              {
+                'type': 'text',
+                'name': 'title',
+                'label': 'Title',
+                'placeholder': 'Title...'
+              }, {
+                'type': 'text',
+                'name': 'content',
+                'label': 'Content'
+              }, {
+                'type': 'date',
+                'name': 'date',
+                'label': 'Date',
+                'description': 'The publication date of this article.'
+              }
+            ]
           }, {
-            name: 'page',
-            label: 'Page',
-            description: 'Static pages or sections.',
-            storage: { type: 'single_file', file: '/pages.json' },
-            fields
+            name: 'author',
+            label: 'Author',
+            description: 'User info of each blog author.',
+            storage: { type: 'single_file', file: '/authors.json' },
+            fields: [
+              {
+                'type': 'text',
+                'name': 'name',
+                'label': 'Name',
+                'placeholder': 'Name...'
+              }, {
+                'type': 'text',
+                'name': 'bio',
+                'label': 'Biography'
+              }, {
+                'type': 'file',
+                'name': 'avatar',
+                'label': 'Avatar'
+              }
+            ]
           }
         ]
       })
@@ -77,21 +91,35 @@ class Demo {
   }
 
   getFile = (projectId, path) => {
-    return Promise.resolve([
-      {
-        title: 'Demo Post',
-        content: 'This is some <b>text</b>.',
-        date: 1541449329000
-      }, {
-        title: 'Another post',
-        content: 'Moar <b>text</b>.',
-        date: 1521999029000
-      }, {
-        title: 'Last post',
-        content: 'Yay!',
-        date: 1532473568000
-      }
-    ])
+    if (path === '/posts.json') {
+      return Promise.resolve([
+        {
+          title: 'Demo Post',
+          content: 'This is some <b>text</b>.',
+          date: 1541449329000
+        }, {
+          title: 'Another post',
+          content: 'Moar <b>text</b>.',
+          date: 1521999029000
+        }, {
+          title: 'Last post',
+          content: 'Yay!',
+          date: 1532473568000
+        }
+      ])
+    } else if (path === '/authors.json') {
+      return Promise.resolve([
+        {
+          name: 'William',
+          bio: 'Love all, trust a few, do wrong to none.'
+        }, {
+          name: 'Edgar',
+          bio: 'I became insane, with long intervals of horrible sanity.'
+        }
+      ])
+    } else {
+      return Promise.reject(Error('404 File not found'))
+    }
   }
 
   putFiles = () => Promise.resolve()
