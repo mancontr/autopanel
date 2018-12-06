@@ -79,7 +79,7 @@ class Demo {
                 'label': 'Title',
                 'placeholder': 'Title...'
               }, {
-                'type': 'text',
+                'type': 'wysiwyg',
                 'name': 'content',
                 'label': 'Content'
               }, {
