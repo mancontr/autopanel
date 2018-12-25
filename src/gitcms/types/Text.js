@@ -1,24 +1,18 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-class TextTypeEditor extends React.Component {
+const TextTypeEditor = ({ field, value, onChange }) => {
+  return (
+    <input type="text" name={field.name} placeholder={field.placeholder}
+      value={value || ''} onChange={(e) => onChange(e.target.value)}
+    />
+  )
+}
 
-  static propTypes = {
-    field: PropTypes.object.isRequired,
-    value: PropTypes.string,
-    onChange: PropTypes.func.isRequired
-  }
-
-  render = () => {
-    const { field, value } = this.props
-    return (
-      <input type="text" name={field.name} placeholder={field.placeholder}
-        value={value || ''}
-        onChange={(e) => this.props.onChange(e.target.value)}
-      />
-    )
-  }
-
+TextTypeEditor.propTypes = {
+  field: PropTypes.object.isRequired,
+  value: PropTypes.string,
+  onChange: PropTypes.func.isRequired
 }
 
 const TextTypeViewer = (props) => (

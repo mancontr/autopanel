@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
@@ -8,38 +8,43 @@ import {
 } from 'src/store/actions/gitcms'
 import './EntityEdit.sass'
 
-export class EntityEdit extends React.Component {
-  static propTypes = {
-    schema: PropTypes.object.isRequired,
-    entity: PropTypes.object.isRequired,
-    params: PropTypes.object.isRequired,
-    router: PropTypes.object.isRequired,
-    getEntity: PropTypes.func.isRequired,
-    createEntity: PropTypes.func.isRequired,
-    saveEntity: PropTypes.func.isRequired,
-    removeEntity: PropTypes.func.isRequired
-  }
+export const EntityEdit = (props) => {
 
-  componentDidMount = () => {
-    if (this.props.schema.isSuccess) {
-      const id = this.props.params.entityId
-      if (!id) {
-        this.setState({ entity: {
-          isSuccess: true,
-          value: {}
-        } })
-        return
-      }
-      this.props.getEntity(this.props.params.entityType, id)
-        .then((res) => this.setState({ entity: res.payload }))
+  const { entityId: id, entityType: type, projectId } = props.params
+  const isNew = id === undefined
+
+  const typeSchema = props.schema.value.entities.find((e) => e.name === type)
+  if (!typeSchema) return <FormattedMessage id="entities.unknown" />
+
+  const [entity, setEntity] = useState({ isLoading: true })
+  const [modified, setModified] = useState(false)
+
+  useEffect(() => {
+    if (isNew) {
+      setEntity({ isSuccess: true, value: {} })
+    } else {
+      props.getEntity(type, id)
+        .then((res) => setEntity({ isSuccess: true, value: res.payload }))
+        .catch(() => setEntity({ isError: true }))
     }
+  }, [type, id])
+
+  // If we don't have the initial values, don't render anything yet.
+  if (entity.isLoading) {
+    return <FormattedMessage id="loading" />
+  }
+  if (entity.isError) {
+    return <FormattedMessage id="entities.error" />
+  }
+  if (!entity.isSuccess || !entity.value) {
+    return false
   }
 
-  renderFields = (entityType) =>
-    entityType.fields.map((f) => {
-      const type = Config.getType(f.type)
-      if (!type) return false
-      const Editor = type.edit
+  const renderFields = () =>
+    typeSchema.fields.map((f) => {
+      const fieldType = Config.getType(f.type)
+      if (!fieldType) return false
+      const Editor = fieldType.edit
       return (
         <div className="box field" key={f.name}>
           <div className="label">{f.label || f.name}</div>
@@ -47,99 +52,74 @@ export class EntityEdit extends React.Component {
             <div className="description">{f.description}</div>
           )}
           <Editor field={f}
-            value={this.state.entity[f.name]}
-            onChange={this.handleChange(f.name)} />
+            value={entity.value[f.name]}
+            onChange={handleChange(f.name)} />
         </div>
       )
     })
 
-  handleChange = (field) => (value) => {
-    this.setState({
-      entity: { ...this.state.entity, [field]: value },
-      modified: true
-    })
+  const handleChange = (field) => (value) => {
+    setEntity({ ...entity, value: { ...entity.value, [field]: value } })
+    setModified(true)
   }
 
-  handleSave = () => {
-    const { entityId, entityType, projectId } = this.props.params
-    const isNew = entityId === undefined
+  const handleSave = () => {
     if (isNew) {
-      this.props.createEntity(entityType, this.state.entity)
-        .then((action) => {
-          const id = action.payload.id
-          this.props.router.push(
-            '/project/' + projectId + '/entities/' + entityType + '/' + id
+      props.createEntity(type, entity.value)
+        .then((res) => {
+          const newId = res.payload.id
+          props.router.push(
+            '/project/' + projectId + '/entities/' + type + '/' + newId
           )
         })
     } else {
-      this.props.saveEntity(entityType, entityId, this.state.entity)
-        .then(() => this.setState({ modified: false }))
+      props.saveEntity(type, id, entity.value)
+        .then(() => setModified(false))
     }
   }
 
-  handleRemove = () => {
-    const { entityId, entityType, projectId } = this.props.params
-    this.props.removeEntity(entityType, entityId)
-      .then(() => this.props.router.push(
-        '/project/' + projectId + '/entities/' + entityType
+  const handleRemove = () => {
+    props.removeEntity(type, id)
+      .then(() => props.router.push(
+        '/project/' + projectId + '/entities/' + type
       ))
   }
 
-  render = () => {
-    const id = this.props.params.entityId
-    const isNew = id === undefined
-
-    if (!isNew) {
-      if (this.props.entity.isLoading) {
-        return <FormattedMessage id="loading" />
-      }
-      if (this.props.entity.isError) {
-        return <FormattedMessage id="entities.error" />
-      }
-      if (!this.props.entity.isSuccess) {
-        return false
-      }
-    }
-
-    const entityType = this.props.schema.value.entities
-      .find((e) => e.name === this.props.params.entityType)
-    if (!entityType) {
-      return <FormattedMessage id="entities.unknown" />
-    }
-
-    const entity = this.state && this.state.entity
-    if (!entity) return false
-
-    const titleValues = {
-      type: entityType.label || entityType.name,
-      id: id
-    }
-
-    return (
-      <div id="entity-edit">
-
-        <h1>
-          <FormattedMessage id={'entities.title.' + (isNew ? 'create' : 'edit')}
-            values={titleValues} />
-        </h1>
-        {this.renderFields(entityType)}
-        <button className="save button" type="button" onClick={this.handleSave}
-          disabled={!this.state.modified}>
-          <FormattedMessage id={this.state.modified ? 'save' : 'saved'} />
-        </button>
-        {!isNew && (
-          <span className="remove" onClick={this.handleRemove}>
-            <FormattedMessage id="remove" />
-          </span>
-        )}
-      </div>
-    )
+  const titleId = 'entities.title.' + (isNew ? 'create' : 'edit')
+  const titleValues = {
+    type: typeSchema.label || typeSchema.name,
+    id: id
   }
+
+  return (
+    <div id="entity-edit">
+      <h1><FormattedMessage id={titleId} values={titleValues} /></h1>
+      {renderFields()}
+      <button className="save button" type="button" onClick={handleSave}
+        disabled={!modified}>
+        <FormattedMessage id={modified ? 'save' : 'saved'} />
+      </button>
+      {!isNew && (
+        <span className="remove" onClick={handleRemove}>
+          <FormattedMessage id="remove" />
+        </span>
+      )}
+    </div>
+  )
+}
+
+EntityEdit.propTypes = {
+  schema: PropTypes.object.isRequired,
+  params: PropTypes.object.isRequired,
+  router: PropTypes.object.isRequired,
+  getEntity: PropTypes.func.isRequired,
+  createEntity: PropTypes.func.isRequired,
+  saveEntity: PropTypes.func.isRequired,
+  removeEntity: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => ({
-  schema: state.projects.currentSchema || {},
-  entity: state.projects.currentEntity || {}
+  schema: state.projects.currentSchema || {}
 })
 export default connect(mapStateToProps, {
   getEntity, createEntity, saveEntity, removeEntity

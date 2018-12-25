@@ -8,28 +8,25 @@ import Header from './Header'
 import Login from './Login'
 import './MainLayout.sass'
 
-export class MainLayout extends React.Component {
-  static propTypes = {
-    children: PropTypes.element,
-    user: PropTypes.object
-  }
-
-  render = () => __CLIENT__ && (
-    <React.Fragment>
+export const MainLayout = ({ user, children }) => {
+  return __CLIENT__ &&
+    <div id="main-layout">
       <Helmet>
         <title>GitCMS</title>
         <link rel="icon" type="image/png" href="/favicon.png" />
       </Helmet>
-      <div id="main-layout">
-        <ErrorBoundary>
-          <Header />
-          <div id="content">
-            {this.props.user ? this.props.children : <Login />}
-          </div>
-        </ErrorBoundary>
-      </div>
-    </React.Fragment>
-  )
+      <ErrorBoundary>
+        <Header />
+        <div id="content">
+          {user ? children : <Login />}
+        </div>
+      </ErrorBoundary>
+    </div>
+}
+
+MainLayout.propTypes = {
+  children: PropTypes.element,
+  user: PropTypes.object
 }
 
 const mapStateToProps = (state) => ({

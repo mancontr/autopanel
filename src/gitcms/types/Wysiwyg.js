@@ -7,23 +7,15 @@ if (__CLIENT__) {
   require('react-quill/dist/quill.snow.css')
 }
 
-class WysiwygTypeEditor extends React.Component {
+const WysiwygTypeEditor = ({ field, value, onChange }) => {
+  const handleChange = (v) => { v !== value && onChange(v) }
+  return <ReactQuill value={value || ''} onChange={handleChange} />
+}
 
-  static propTypes = {
-    field: PropTypes.object.isRequired,
-    value: PropTypes.string,
-    onChange: PropTypes.func.isRequired
-  }
-
-  handleChange = (v) => {
-    this.props.onChange(v)
-  }
-
-  render = () => {
-    const { field, value } = this.props
-    return <ReactQuill value={value} onChange={this.handleChange} />
-  }
-
+WysiwygTypeEditor.propTypes = {
+  field: PropTypes.object.isRequired,
+  value: PropTypes.string,
+  onChange: PropTypes.func.isRequired
 }
 
 const WysiwygTypeViewer = (props) => (

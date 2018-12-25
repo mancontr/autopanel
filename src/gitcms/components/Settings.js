@@ -1,8 +1,8 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
 
-export class Settings extends React.Component {
-  render = () => (
+export const Settings = () => {
+  return (
     <React.Fragment>
       <h1><FormattedMessage id="settings" /></h1>
       <div className="box">

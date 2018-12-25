@@ -4,64 +4,65 @@ import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
 import './Dashboard.sass'
 
-export class Dashboard extends React.Component {
-  static propTypes = {
-    project: PropTypes.object.isRequired,
-    schema: PropTypes.object.isRequired
-  }
+export const Dashboard = ({ project, schema }) => {
 
-  renderAbout = () => {
-    if (this.props.project.isLoading) {
+  const renderAbout = () => {
+    if (project.isLoading) {
       return <FormattedMessage id="loading" />
     }
-    if (this.props.project.isError) {
+    if (project.isError) {
       return <FormattedMessage id="project.error" />
     }
-    if (this.props.project.isSuccess) {
-      const project = this.props.project.value
+    if (project.isSuccess) {
+      const val = project.value
       const style = {}
       let overlay = false
-      if (project.avatar) {
+      if (val.avatar) {
         style.backgroundImage = 'url("' + project.avatar + '")'
       } else {
-        overlay = project.name[0].toUpperCase()
+        overlay = val.name[0].toUpperCase()
       }
       return (
         <div className="project">
           <div className="avatar" style={style}>{overlay}</div>
           <div className="info">
-            <div className="name">{project.fullname}</div>
-            <div className="description">{project.description}</div>
+            <div className="name">{val.fullname}</div>
+            <div className="description">{val.description}</div>
           </div>
         </div>
       )
     }
   }
 
-  renderEntities = () => {
-    if (this.props.project.isLoading || this.props.schema.isLoading) {
+  const renderEntities = () => {
+    if (project.isLoading || schema.isLoading) {
       return <FormattedMessage id="loading" />
     }
-    if (this.props.schema.isError) {
+    if (schema.isError) {
       return <FormattedMessage id="project.configured.error" />
     }
-    if (this.props.schema.isSuccess) {
+    if (schema.isSuccess) {
       return <FormattedMessage id="project.configured.ok"
-        values={{ n: this.props.schema.value.entities.length }} />
+        values={{ n: schema.value.entities.length }} />
     }
   }
 
-  render = () => (
+  return (
     <div id="dashboard">
       <h1><FormattedMessage id="dashboard" /></h1>
       <div className="box about">
-        {this.renderAbout()}
+        {renderAbout()}
       </div>
       <div className="box entities">
-        {this.renderEntities()}
+        {renderEntities()}
       </div>
     </div>
   )
+}
+
+Dashboard.propTypes = {
+  project: PropTypes.object.isRequired,
+  schema: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state) => ({
