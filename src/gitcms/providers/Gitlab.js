@@ -16,7 +16,7 @@ class Gitlab {
     '&state=gitlab'
   )
 
-  callback = async ({ location }) => {
+  callback = async (gitcms, { location }) => {
     const q = QueryString.parse(location.hash.substring(1))
     if (q.access_token) {
       const url = prefix + '/user'
@@ -24,19 +24,16 @@ class Gitlab {
         headers: { Authorization: 'Bearer ' + q.access_token }
       })
       const userinfo = await res.json()
-      return {
-        token: q.access_token,
-        userinfo: {
-          name: userinfo.name,
-          avatar: userinfo.avatar_url,
-          provider: this.getId()
-        }
-      }
+      gitcms.login(q.access_token, {
+        name: userinfo.name,
+        avatar: userinfo.avatar_url,
+        provider: this.getId()
+      })
     }
   }
 
-  getProjects = async () => {
-    const token = window.store.getState().user.token
+  getProjects = async (gitcms) => {
+    const token = gitcms.getToken()
     const url = prefix + '/projects?' + QueryString.stringify({
       membership: 'true',
       order_by: 'last_activity_at'
@@ -54,8 +51,8 @@ class Gitlab {
     }))
   }
 
-  getProject = async (projectId) => {
-    const token = window.store.getState().user.token
+  getProject = async (gitcms, projectId) => {
+    const token = gitcms.getToken()
     const url = prefix + '/projects/' + projectId
     const res = await fetch(url, {
       headers: { Authorization: 'Bearer ' + token }
@@ -71,10 +68,11 @@ class Gitlab {
     }
   }
 
-  getSchema = async (projectId) => this.getFile(projectId, '.gitcms')
+  getSchema = async (gitcms, projectId) =>
+    this.getFile(gitcms, projectId, '.gitcms')
 
-  getFile = async (projectId, path) => {
-    const token = window.store.getState().user.token
+  getFile = async (gitcms, projectId, path) => {
+    const token = gitcms.getToken()
     const encodedPath = encodeURIComponent(path)
     const url = prefix + '/projects/' + projectId +
       '/repository/files/' + encodedPath + '?ref=master'
@@ -86,7 +84,7 @@ class Gitlab {
     return JSON.parse(window.atob(file.content))
   }
 
-  putFiles = async (projectId, actions) => {
+  putFiles = async (gitcms, projectId, actions) => {
     const token = window.store.getState().user.token
     const url = prefix + '/projects/' + projectId + '/repository/commits'
     const res = await fetch(url, {

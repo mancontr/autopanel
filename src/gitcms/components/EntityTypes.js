@@ -1,11 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
-import { connect } from 'react-redux'
 import { Link } from 'react-router'
+import { useGitcms } from 'src/gitcms'
 // import './Dashboard.sass'
 
-export const EntityTypes = ({ schema, params }) => {
+const EntityTypes = ({ params }) => {
+  const gitcms = useGitcms()
+  const schema = gitcms.getSchema()
   const prefix = '/project/' + params.projectId + '/entities/'
   return (
     <div id="entities">
@@ -19,7 +21,7 @@ export const EntityTypes = ({ schema, params }) => {
             </tr>
           </thead>
           <tbody>
-            {schema.value.entities.map((entity) => (
+            {schema.entities.map((entity) => (
               <tr className="entity" key={entity.name}>
                 <td>
                   <Link to={prefix + entity.name}>
@@ -39,11 +41,7 @@ export const EntityTypes = ({ schema, params }) => {
 }
 
 EntityTypes.propTypes = {
-  params: PropTypes.object.isRequired,
-  schema: PropTypes.object.isRequired
+  params: PropTypes.object.isRequired
 }
 
-const mapStateToProps = (state) => ({
-  schema: state.projects.currentSchema || {}
-})
-export default connect(mapStateToProps)(EntityTypes)
+export default EntityTypes

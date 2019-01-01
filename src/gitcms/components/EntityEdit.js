@@ -1,44 +1,22 @@
-import React, { useState, useEffect } from 'react'
+import React, { Suspense, useState } from 'react'
 import PropTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
-import { connect } from 'react-redux'
 import Config from 'src/gitcms/Config'
-import {
-  getEntity, createEntity, saveEntity, removeEntity
-} from 'src/store/actions/gitcms'
+import ErrorBoundary from './ErrorBoundary'
+import { WithGitcms, useGitcms } from 'src/gitcms'
 import './EntityEdit.sass'
 
 export const EntityEdit = (props) => {
-
-  const { entityId: id, entityType: type, projectId } = props.params
+  const gitcms = useGitcms()
+  const id = gitcms.getEntityId()
+  const type = gitcms.getEntityType()
+  const projectId = gitcms.getProjectId()
+  const typeSchema = gitcms.getEntityTypeSchema()
+  const currentEntity = gitcms.getEntity() || {}
   const isNew = id === undefined
 
-  const typeSchema = props.schema.value.entities.find((e) => e.name === type)
-  if (!typeSchema) return <FormattedMessage id="entities.unknown" />
-
-  const [entity, setEntity] = useState({ isLoading: true })
+  const [entity, setEntity] = useState(currentEntity)
   const [modified, setModified] = useState(false)
-
-  useEffect(() => {
-    if (isNew) {
-      setEntity({ isSuccess: true, value: {} })
-    } else {
-      props.getEntity(type, id)
-        .then((res) => setEntity({ isSuccess: true, value: res.payload }))
-        .catch(() => setEntity({ isError: true }))
-    }
-  }, [type, id])
-
-  // If we don't have the initial values, don't render anything yet.
-  if (entity.isLoading) {
-    return <FormattedMessage id="loading" />
-  }
-  if (entity.isError) {
-    return <FormattedMessage id="entities.error" />
-  }
-  if (!entity.isSuccess || !entity.value) {
-    return false
-  }
 
   const renderFields = () =>
     typeSchema.fields.map((f) => {
@@ -52,34 +30,34 @@ export const EntityEdit = (props) => {
             <div className="description">{f.description}</div>
           )}
           <Editor field={f}
-            value={entity.value[f.name]}
+            value={entity[f.name]}
             onChange={handleChange(f.name)} />
         </div>
       )
     })
 
   const handleChange = (field) => (value) => {
-    setEntity({ ...entity, value: { ...entity.value, [field]: value } })
+    setEntity({ ...entity, [field]: value })
     setModified(true)
   }
 
   const handleSave = () => {
     if (isNew) {
-      props.createEntity(type, entity.value)
+      gitcms.createEntity(entity)
         .then((res) => {
-          const newId = res.payload.id
+          const newId = res.id
           props.router.push(
             '/project/' + projectId + '/entities/' + type + '/' + newId
           )
         })
     } else {
-      props.saveEntity(type, id, entity.value)
+      gitcms.saveEntity(entity)
         .then(() => setModified(false))
     }
   }
 
   const handleRemove = () => {
-    props.removeEntity(type, id)
+    gitcms.removeEntity()
       .then(() => props.router.push(
         '/project/' + projectId + '/entities/' + type
       ))
@@ -109,18 +87,28 @@ export const EntityEdit = (props) => {
 }
 
 EntityEdit.propTypes = {
-  schema: PropTypes.object.isRequired,
-  params: PropTypes.object.isRequired,
-  router: PropTypes.object.isRequired,
-  getEntity: PropTypes.func.isRequired,
-  createEntity: PropTypes.func.isRequired,
-  saveEntity: PropTypes.func.isRequired,
-  removeEntity: PropTypes.func.isRequired
+  router: PropTypes.object.isRequired
 }
 
-const mapStateToProps = (state) => ({
-  schema: state.projects.currentSchema || {}
-})
-export default connect(mapStateToProps, {
-  getEntity, createEntity, saveEntity, removeEntity
-})(EntityEdit)
+const EntityEditWrapper = (props) => {
+  const currentType = props.params.entityType
+  const currentId = props.params.entityId
+  const fallback = <div className="box"><FormattedMessage id="loading" /></div>
+  const error = <div className="box"><FormattedMessage id="entities.error" /></div>
+  return (
+    <WithGitcms type={currentType} id={currentId}>
+      <ErrorBoundary fallback={error}>
+        <Suspense fallback={fallback}>
+          <EntityEdit router={props.router} />
+        </Suspense>
+      </ErrorBoundary>
+    </WithGitcms>
+  )
+}
+
+EntityEditWrapper.propTypes = {
+  params: PropTypes.object.isRequired,
+  router: PropTypes.object.isRequired
+}
+
+export default EntityEditWrapper

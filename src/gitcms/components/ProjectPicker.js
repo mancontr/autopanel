@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { Suspense } from 'react'
 import PropTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
 import { Link } from 'react-router'
-import { connect } from 'react-redux'
-import { getProjects } from 'src/store/actions/gitcms'
+
+import ErrorBoundary from './ErrorBoundary'
+import { useGitcms } from 'src/gitcms'
 import './ProjectPicker.sass'
 
 const Project = ({ project }) => {
@@ -31,50 +32,41 @@ Project.propTypes = {
   project: PropTypes.object.isRequired
 }
 
-export const ProjectPicker = ({ getProjects, projects }) => {
+const ProjectList = () => {
+  const gitcms = useGitcms()
+  const projects = gitcms.getProjects()
 
-  useEffect(() => {
-    getProjects()
-  }, [])
-
-  let content = <FormattedMessage id="loading" />
-
-  if (projects.isError) {
-    content = <FormattedMessage id="projects.error" />
-  }
-  if (projects.isSuccess) {
-    const val = projects.value
-    if (val.length) {
-      content = (
+  if (projects.length) {
+    return (
+      <div className="box">
         <div className="projects">
-          {val.map(project => <Project key={project.id} project={project} />)}
+          {projects.map(project => <Project key={project.id} project={project} />)}
         </div>
-      )
-    } else {
-      content = (
-        <div>
-          <div><FormattedMessage id="projects.empty" /></div>
-          <div><FormattedMessage id="projects.empty2" /></div>
-        </div>
-      )
-    }
+      </div>
+    )
+  } else {
+    return (
+      <div className="box">
+        <div><FormattedMessage id="projects.empty" /></div>
+        <div><FormattedMessage id="projects.empty2" /></div>
+      </div>
+    )
   }
+}
 
+const ProjectPicker = () => {
+  const fallback = <div className="box"><FormattedMessage id="loading" /></div>
+  const error = <div className="box"><FormattedMessage id="projects.error" /></div>
   return (
     <main id="project-picker">
       <h1><FormattedMessage id="projects" /></h1>
-      <div className="box">{content}</div>
+      <ErrorBoundary fallback={error}>
+        <Suspense fallback={fallback}>
+          <ProjectList />
+        </Suspense>
+      </ErrorBoundary>
     </main>
   )
 }
 
-ProjectPicker.propTypes = {
-  getProjects: PropTypes.func.isRequired,
-  projects: PropTypes.object.isRequired
-}
-
-const mapStateToProps = (state) => ({
-  projects: state.projects.list || {}
-})
-
-export default connect(mapStateToProps, { getProjects })(ProjectPicker)
+export default ProjectPicker

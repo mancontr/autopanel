@@ -1,15 +1,13 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
-import { callback } from 'src/store/actions/gitcms'
+import { useGitcms } from 'src/gitcms'
 
 export const ProviderCallback = (props) => {
-
+  const gitcms = useGitcms()
   useEffect(() => {
-    // Find this provider
     const provider = props.params.provider
-    props.callback(provider, props)
+    gitcms.callback(provider, props)
       .then(() => props.router.replace('/'))
   }, [])
 
@@ -18,8 +16,7 @@ export const ProviderCallback = (props) => {
 
 ProviderCallback.propTypes = {
   params: PropTypes.object.isRequired,
-  router: PropTypes.object.isRequired,
-  callback: PropTypes.func.isRequired
+  router: PropTypes.object.isRequired
 }
 
-export default connect(null, { callback })(ProviderCallback)
+export default ProviderCallback

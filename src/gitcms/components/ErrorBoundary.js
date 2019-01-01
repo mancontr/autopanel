@@ -5,7 +5,8 @@ import './ErrorBoundary.sass'
 
 class ErrorBoundary extends React.Component {
   static propTypes = {
-    children: PropTypes.any
+    children: PropTypes.any,
+    fallback: PropTypes.any
   }
 
   constructor (props) {
@@ -19,7 +20,7 @@ class ErrorBoundary extends React.Component {
 
   render () {
     if (this.state.hasError) {
-      return (
+      return this.props.fallback || (
         <div className="page-error">
           <img src={require('src/static/images/error.png')}
             className="error-image" />

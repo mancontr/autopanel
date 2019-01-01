@@ -22,4 +22,19 @@ Developing
 ----------
 
 To run the project locally, just clone it and use `yarn` and `yarn start`.
-You can use NPM insead, too. Either way, the project will start on [localhost:3000](http://localhost:3000).
+You can use NPM insead, too. Either way, the project will start on
+[localhost:3000](http://localhost:3000).
+
+Work in progress
+----------------
+
+We're in the middle of a migration to React alpha features: hooks and suspense.
+
+On src/gitcms we have a context provider, which allows setting the current
+project, entity type, and id, and passes the aggregated info down, exposing
+an API which uses them to call the provider/storage and perform all actions.
+These actions throw promises while loading info, just as with `react-cache`.
+The user token and info is saved on the localStorage, and loaded on mount.
+
+Known bugs: We don't invalidate caches yet, so entities/lists/...
+can't get updated.

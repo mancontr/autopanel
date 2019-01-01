@@ -1,72 +1,60 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, { Suspense } from 'react'
 import { FormattedMessage } from 'react-intl'
-import { connect } from 'react-redux'
+
+import { useGitcms } from 'src/gitcms'
 import './Dashboard.sass'
 
-export const Dashboard = ({ project, schema }) => {
+const Entities = () => {
+  const gitcms = useGitcms()
+  const schema = gitcms.optional(() => gitcms.getSchema())
+  if (!schema) return <FormattedMessage id="project.configured.error" />
 
-  const renderAbout = () => {
-    if (project.isLoading) {
-      return <FormattedMessage id="loading" />
-    }
-    if (project.isError) {
-      return <FormattedMessage id="project.error" />
-    }
-    if (project.isSuccess) {
-      const val = project.value
-      const style = {}
-      let overlay = false
-      if (val.avatar) {
-        style.backgroundImage = 'url("' + project.avatar + '")'
-      } else {
-        overlay = val.name[0].toUpperCase()
-      }
-      return (
-        <div className="project">
-          <div className="avatar" style={style}>{overlay}</div>
-          <div className="info">
-            <div className="name">{val.fullname}</div>
-            <div className="description">{val.description}</div>
-          </div>
-        </div>
-      )
-    }
+  return <FormattedMessage id="project.configured.ok"
+    values={{ n: schema.entities.length }} />
+}
+
+const About = () => {
+  const gitcms = useGitcms()
+  const project = gitcms.optional(() => gitcms.getProject())
+  if (!project) return <FormattedMessage id="project.error" />
+
+  const style = {}
+  let overlay = false
+  if (project.avatar) {
+    style.backgroundImage = 'url("' + project.avatar + '")'
+  } else {
+    overlay = project.name[0].toUpperCase()
   }
-
-  const renderEntities = () => {
-    if (project.isLoading || schema.isLoading) {
-      return <FormattedMessage id="loading" />
-    }
-    if (schema.isError) {
-      return <FormattedMessage id="project.configured.error" />
-    }
-    if (schema.isSuccess) {
-      return <FormattedMessage id="project.configured.ok"
-        values={{ n: schema.value.entities.length }} />
-    }
-  }
-
   return (
-    <div id="dashboard">
-      <h1><FormattedMessage id="dashboard" /></h1>
-      <div className="box about">
-        {renderAbout()}
-      </div>
-      <div className="box entities">
-        {renderEntities()}
+    <div className="project">
+      <div className="avatar" style={style}>{overlay}</div>
+      <div className="info">
+        <div className="name">{project.fullname}</div>
+        <div className="description">{project.description}</div>
       </div>
     </div>
   )
 }
 
-Dashboard.propTypes = {
-  project: PropTypes.object.isRequired,
-  schema: PropTypes.object.isRequired
+const Dashboard = () => {
+
+  const fallback = <FormattedMessage id="loading" />
+
+  return (
+    <div id="dashboard">
+      <h1><FormattedMessage id="dashboard" /></h1>
+      <div className="box about">
+        <Suspense fallback={fallback}>
+          <About />
+        </Suspense>
+      </div>
+      <div className="box entities">
+        <Suspense fallback={fallback}>
+          <Entities />
+        </Suspense>
+      </div>
+    </div>
+  )
 }
 
-const mapStateToProps = (state) => ({
-  project: state.projects.current || {},
-  schema: state.projects.currentSchema || {}
-})
-export default connect(mapStateToProps)(Dashboard)
+export default Dashboard

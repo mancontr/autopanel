@@ -1,13 +1,15 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
 import { Link } from 'react-router'
-import { connect } from 'react-redux'
-import { logout } from 'src/store/actions/gitcms'
+import { useGitcms } from 'src/gitcms'
 
 import './Header.sass'
 
-const Header = ({ user, logout }) => {
+const Header = () => {
+  const gitcms = useGitcms()
+  const user = gitcms.getUser()
+  const logout = gitcms.logout
+
   let userBlock = false
   if (user) {
     const style = {}
@@ -38,15 +40,4 @@ const Header = ({ user, logout }) => {
   )
 }
 
-Header.propTypes = {
-  user: PropTypes.object,
-  logout: PropTypes.func.isRequired
-}
-
-const mapStateToProps = (state) => ({
-  user: state.user.userinfo
-})
-
-const HeaderContainer = connect(mapStateToProps, { logout })(Header)
-
-export default HeaderContainer
+export default Header

@@ -1,38 +1,40 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
 import { Helmet } from 'react-helmet'
 
-import ErrorBoundary from 'src/gitcms/components/ErrorBoundary'
+import { useGitcms } from 'src/gitcms'
 import Header from './Header'
 import Login from './Login'
 import './MainLayout.sass'
 
-export const MainLayout = ({ user, children }) => {
-  return __CLIENT__ &&
+const ChildrenOrLogin = ({ children }) => {
+  const gitcms = useGitcms()
+  const user = gitcms.getUser()
+  return <div id="content">{user ? children : <Login />}</div>
+}
+
+ChildrenOrLogin.propTypes = {
+  children: PropTypes.element
+}
+
+export const MainLayout = ({ children }) => {
+  return (
     <div id="main-layout">
       <Helmet>
         <title>GitCMS</title>
         <link rel="icon" type="image/png" href="/favicon.png" />
       </Helmet>
-      <ErrorBoundary>
+      <Suspense fallback={'Loading...'}>
         <Header />
-        <div id="content">
-          {user ? children : <Login />}
-        </div>
-      </ErrorBoundary>
+        <ChildrenOrLogin children={children} />
+      </Suspense>
     </div>
+  )
 }
 
 MainLayout.propTypes = {
-  children: PropTypes.element,
-  user: PropTypes.object
+  children: PropTypes.element
 }
 
-const mapStateToProps = (state) => ({
-  user: state.user.userinfo
-})
-
-const MainLayoutContainer = connect(mapStateToProps)(MainLayout)
-
-export default MainLayoutContainer
+const _export = __CLIENT__ ? MainLayout : false
+export default _export // MainLayout

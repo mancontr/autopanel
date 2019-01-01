@@ -47,23 +47,20 @@ class Demo {
 
   login = () => process.env.APP_URL + '/providers/demo/oauth'
 
-  callback = () => Promise.resolve({
-    token: 'fake-token',
-    userinfo: {
-      name: 'Anonymous',
-      provider: this.getId()
-    }
+  callback = async (gitcms) => gitcms.login('fake-token', {
+    name: 'Anonymous',
+    provider: this.getId()
   })
 
-  getProjects = () => [ demoProject, badProject ]
+  getProjects = async () => [ demoProject, badProject ]
 
-  getProject = (projectId) => {
+  getProject = async (gitcms, projectId) => {
     if (projectId === demoProject.id) return demoProject
     if (projectId === badProject.id) return badProject
     return Promise.reject(Error('404 Project not found'))
   }
 
-  getSchema = (projectId) => {
+  getSchema = async (gitcms, projectId) => {
     if (projectId === demoProject.id) {
       return Promise.resolve({
         entities: [
@@ -117,12 +114,12 @@ class Demo {
     return Promise.reject(Error('404 File not found'))
   }
 
-  getFile = (projectId, path) => {
+  getFile = async (gitcms, projectId, path) => {
     if (files[path]) return Promise.resolve(files[path])
     return Promise.reject(Error('404 File not found'))
   }
 
-  putFiles = (projectId, actions) => {
+  putFiles = async (gitcms, projectId, actions) => {
     actions.forEach((action) => {
       if (action.action === 'delete') {
         files[action.file_path] = null
