@@ -5,7 +5,8 @@
     "standard-react"
   ],
   "plugins": [
-    "babel"
+    "babel",
+    "react-hooks"
   ],
   "env"     : {
     "browser" : true
@@ -22,6 +23,7 @@
     "max-len": ["error", 120, 2],
     "jsx-quotes": ["error", "prefer-double"],
     "react/no-unused-prop-types": "off",
+    "react-hooks/rules-of-hooks": "error",
     "padded-blocks": "off",
     "no-mixed-operators": [
       "error",
