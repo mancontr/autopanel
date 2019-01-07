@@ -1,14 +1,14 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Link } from 'react-router'
-import { useGitcms } from '../api'
+import { useAutoPanel } from '../api'
 
 import './Header.sass'
 
 const Header = () => {
-  const gitcms = useGitcms()
-  const user = gitcms.getUser()
-  const logout = gitcms.logout
+  const autopanel = useAutoPanel()
+  const user = autopanel.getUser()
+  const logout = autopanel.logout
 
   let userBlock = false
   if (user) {
@@ -32,8 +32,8 @@ const Header = () => {
   return (
     <header id="top-header">
       <Link className="home" to="/">
-        <span className="logo icon icon-gitcms" />
-        GitCMS
+        <span className="logo icon icon-autopanel" />
+        AutoPanel
       </Link>
       {userBlock}
     </header>

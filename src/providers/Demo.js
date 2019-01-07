@@ -9,7 +9,7 @@ const badProject = {
   id: 'bad-project',
   name: 'Unconfigured Project',
   fullname: 'Unconfigured Project',
-  description: 'A project lacking an schema, thus not usable with gitcms.'
+  description: 'A project lacking an schema, thus not usable with autopanel.'
 }
 
 const files = {
@@ -51,20 +51,20 @@ class Demo {
 
   login = () => this.appUrl + '/providers/demo/oauth'
 
-  callback = async (gitcms) => gitcms.login('fake-token', {
+  callback = async (autopanel) => autopanel.login('fake-token', {
     name: 'Anonymous',
     provider: this.getId()
   })
 
   getProjects = async () => [ demoProject, badProject ]
 
-  getProject = async (gitcms, projectId) => {
+  getProject = async (autopanel, projectId) => {
     if (projectId === demoProject.id) return demoProject
     if (projectId === badProject.id) return badProject
     return Promise.reject(Error('404 Project not found'))
   }
 
-  getSchema = async (gitcms, projectId) => {
+  getSchema = async (autopanel, projectId) => {
     if (projectId === demoProject.id) {
       return Promise.resolve({
         entities: [
@@ -118,12 +118,12 @@ class Demo {
     return Promise.reject(Error('404 File not found'))
   }
 
-  getFile = async (gitcms, projectId, path) => {
+  getFile = async (autopanel, projectId, path) => {
     if (files[path]) return Promise.resolve(files[path])
     return Promise.reject(Error('404 File not found'))
   }
 
-  putFiles = async (gitcms, projectId, actions) => {
+  putFiles = async (autopanel, projectId, actions) => {
     actions.forEach((action) => {
       if (action.action === 'delete') {
         files[action.file_path] = null

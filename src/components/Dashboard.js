@@ -1,12 +1,12 @@
 import React, { Suspense } from 'react'
 import { FormattedMessage } from 'react-intl'
 
-import { useGitcms } from '../api'
+import { useAutoPanel } from '../api'
 import './Dashboard.sass'
 
 const Entities = () => {
-  const gitcms = useGitcms()
-  const schema = gitcms.optional(() => gitcms.getSchema())
+  const autopanel = useAutoPanel()
+  const schema = autopanel.optional(() => autopanel.getSchema())
   if (!schema) return <FormattedMessage id="project.configured.error" />
 
   return <FormattedMessage id="project.configured.ok"
@@ -14,8 +14,8 @@ const Entities = () => {
 }
 
 const About = () => {
-  const gitcms = useGitcms()
-  const project = gitcms.optional(() => gitcms.getProject())
+  const autopanel = useAutoPanel()
+  const project = autopanel.optional(() => autopanel.getProject())
   if (!project) return <FormattedMessage id="project.error" />
 
   const style = {}

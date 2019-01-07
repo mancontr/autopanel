@@ -1,14 +1,14 @@
 import React, { Suspense } from 'react'
 import PropTypes from 'prop-types'
 
-import { useGitcms } from '../api'
+import { useAutoPanel } from '../api'
 import Header from './Header'
 import Login from './Login'
 import './MainLayout.sass'
 
 const ChildrenOrLogin = ({ children }) => {
-  const gitcms = useGitcms()
-  const user = gitcms.getUser()
+  const autopanel = useAutoPanel()
+  const user = autopanel.getUser()
   return <div id="content">{user ? children : <Login />}</div>
 }
 

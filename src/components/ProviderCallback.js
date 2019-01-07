@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
-import { useGitcms } from '../api'
+import { useAutoPanel } from '../api'
 
 export const ProviderCallback = (props) => {
-  const gitcms = useGitcms()
+  const autopanel = useAutoPanel()
   useEffect(() => {
     const provider = props.params.provider
-    gitcms.callback(provider, props)
+    autopanel.callback(provider, props)
       .then(() => props.router.replace('/'))
   }, [])
 

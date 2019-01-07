@@ -2,13 +2,13 @@ import React, { useState, useContext } from 'react'
 import PropTypes from 'prop-types'
 import Config from './Config'
 
-const GitcmsContext = React.createContext({})
+const AutoPanelContext = React.createContext({})
 
 // Keep the user info in the state and sync'ed to localStorage
 const useUser = (parent) => {
   const [user, setUser] = useState(() => {
     if (!parent.user) {
-      // At root gitcms, load initial data from localStorage
+      // At root AutoPanel, load initial data from localStorage
       return JSON.parse(localStorage.getItem('user'))
     } else {
       return parent.user
@@ -40,8 +40,8 @@ const usePromiseCache = (parent) => {
   return [cache, cacheRequest]
 }
 
-export const WithGitcms = ({ project, type, id, children }) => {
-  const parent = useContext(GitcmsContext)
+export const WithAutoPanel = ({ project, type, id, children }) => {
+  const parent = useContext(AutoPanelContext)
   const [user, setUser] = useUser(parent)
   const [cache, cacheRequest] = usePromiseCache(parent)
 
@@ -125,17 +125,17 @@ export const WithGitcms = ({ project, type, id, children }) => {
 
   // Render
   return (
-    <GitcmsContext.Provider value={{ user, cache, data, api }}>
+    <AutoPanelContext.Provider value={{ user, cache, data, api }}>
       {children}
-    </GitcmsContext.Provider>
+    </AutoPanelContext.Provider>
   )
 }
 
-WithGitcms.propTypes = {
+WithAutoPanel.propTypes = {
   project: PropTypes.string,
   type: PropTypes.string,
   id: PropTypes.string,
   children: PropTypes.any
 }
 
-export const useGitcms = () => useContext(GitcmsContext).api
+export const useAutoPanel = () => useContext(AutoPanelContext).api

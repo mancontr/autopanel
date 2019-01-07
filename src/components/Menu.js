@@ -2,13 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
 import { IndexLink, Link } from 'react-router'
-import { useGitcms } from '../api'
+import { useAutoPanel } from '../api'
 import './Menu.sass'
 
 const Menu = ({ projectId }) => {
   const base = '/project/' + projectId
-  const gitcms = useGitcms()
-  const schema = gitcms.optional(() => gitcms.getSchema())
+  const autopanel = useAutoPanel()
+  const schema = autopanel.optional(() => autopanel.getSchema())
 
   const entries = []
   entries.push(

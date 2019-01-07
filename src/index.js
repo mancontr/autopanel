@@ -1,11 +1,11 @@
-import { WithGitcms, useGitcms } from './api'
+import { WithAutoPanel, useAutoPanel } from './api'
 import config from './Config'
 import * as components from './components/index'
 import * as providers from './providers/index'
 
 export {
-  WithGitcms,
-  useGitcms,
+  WithAutoPanel,
+  useAutoPanel,
   config,
   components,
   providers

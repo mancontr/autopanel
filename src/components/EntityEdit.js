@@ -3,16 +3,16 @@ import PropTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
 import Config from '../Config'
 import ErrorBoundary from './ErrorBoundary'
-import { WithGitcms, useGitcms } from '../api'
+import { WithAutoPanel, useAutoPanel } from '../api'
 import './EntityEdit.sass'
 
 export const EntityEdit = (props) => {
-  const gitcms = useGitcms()
-  const id = gitcms.getEntityId()
-  const type = gitcms.getEntityType()
-  const projectId = gitcms.getProjectId()
-  const typeSchema = gitcms.getEntityTypeSchema()
-  const currentEntity = gitcms.getEntity() || {}
+  const autopanel = useAutoPanel()
+  const id = autopanel.getEntityId()
+  const type = autopanel.getEntityType()
+  const projectId = autopanel.getProjectId()
+  const typeSchema = autopanel.getEntityTypeSchema()
+  const currentEntity = autopanel.getEntity() || {}
   const isNew = id === undefined
 
   const [entity, setEntity] = useState(currentEntity)
@@ -43,7 +43,7 @@ export const EntityEdit = (props) => {
 
   const handleSave = () => {
     if (isNew) {
-      gitcms.createEntity(entity)
+      autopanel.createEntity(entity)
         .then((res) => {
           const newId = res.id
           props.router.push(
@@ -51,13 +51,13 @@ export const EntityEdit = (props) => {
           )
         })
     } else {
-      gitcms.saveEntity(entity)
+      autopanel.saveEntity(entity)
         .then(() => setModified(false))
     }
   }
 
   const handleRemove = () => {
-    gitcms.removeEntity()
+    autopanel.removeEntity()
       .then(() => props.router.push(
         '/project/' + projectId + '/entities/' + type
       ))
@@ -96,13 +96,13 @@ const EntityEditWrapper = (props) => {
   const fallback = <div className="box"><FormattedMessage id="loading" /></div>
   const error = <div className="box"><FormattedMessage id="entities.error" /></div>
   return (
-    <WithGitcms type={currentType} id={currentId}>
+    <WithAutoPanel type={currentType} id={currentId}>
       <ErrorBoundary fallback={error}>
         <Suspense fallback={fallback}>
           <EntityEdit router={props.router} />
         </Suspense>
       </ErrorBoundary>
-    </WithGitcms>
+    </WithAutoPanel>
   )
 }
 

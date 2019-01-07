@@ -1,8 +1,8 @@
-GitCMS
-======
+AutoPanel
+=========
 
-GitCMS is an extensible CMS, using Git as the backend. Designed for static site
-edition, but can be used anywhere.
+AutoPanel is an extensible generic CMS, which uses a schema to learn about your
+domain entities, and uses any kind of backend to store the data.
 
 How it works
 ------------
@@ -21,28 +21,23 @@ usual ones you expect on any CMS, like WYSIWYG or date.
 Usage
 -----
 
-To try Gitcms, we provide a demo project. Just clone
-[gitcms-app](https://github.com/mancontr/gitcms-app) and use `yarn` and
+To try AutoPanel, we provide a demo project. Just clone
+[autopanel-app](https://github.com/mancontr/autopanel-app) and use `yarn` and
 `yarn start`. You can use NPM insead, too.
 Either way, the project will start on [localhost:3000](http://localhost:3000).
 
 Developing
 ----------
 
-To try your changes in Gitcms, clone this repo and use `yarn link`, then link it
-in the demo project with `yarn link gitcms`. We also provide a "watch mode" to
-rebuild the bundle on change, which you can start with `yarn watch`.
+To try your changes in AutoPanel, clone this repo and use `yarn link`, then
+link it in the demo project with `yarn link autopanel`. We also provide a
+"watch mode" to rebuild the bundle on change, which you can start with
+`yarn watch`.
 
 Work in progress
 ----------------
 
-We're in the middle of a migration to React alpha features: hooks and suspense.
-
-On src/gitcms we have a context provider, which allows setting the current
-project, entity type, and id, and passes the aggregated info down, exposing
-an API which uses them to call the provider/storage and perform all actions.
-These actions throw promises while loading info, just as with `react-cache`.
-The user token and info is saved on the localStorage, and loaded on mount.
+This is alpha software. Try it, but don't use it in production yet.
 
 Known bugs: We don't invalidate caches yet, so entities/lists/...
 can't get updated.

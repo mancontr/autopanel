@@ -2,12 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
 import { Link } from 'react-router'
-import { useGitcms } from '../api'
+import { useAutoPanel } from '../api'
 // import './Dashboard.sass'
 
 const EntityTypes = ({ params }) => {
-  const gitcms = useGitcms()
-  const schema = gitcms.getSchema()
+  const autopanel = useAutoPanel()
+  const schema = autopanel.getSchema()
   const prefix = '/project/' + params.projectId + '/entities/'
   return (
     <div id="entities">

@@ -1,14 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { WithGitcms } from '../api'
+import { WithAutoPanel } from '../api'
 import ErrorBoundary from './ErrorBoundary'
 
 const Wrapper = ({ children }) => {
   return (
     <ErrorBoundary>
-      <WithGitcms>
+      <WithAutoPanel>
         {children}
-      </WithGitcms>
+      </WithAutoPanel>
     </ErrorBoundary>
   )
 }

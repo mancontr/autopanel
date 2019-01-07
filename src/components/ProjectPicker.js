@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl'
 import { Link } from 'react-router'
 
 import ErrorBoundary from './ErrorBoundary'
-import { useGitcms } from '../api'
+import { useAutoPanel } from '../api'
 import './ProjectPicker.sass'
 
 const Project = ({ project }) => {
@@ -33,8 +33,8 @@ Project.propTypes = {
 }
 
 const ProjectList = () => {
-  const gitcms = useGitcms()
-  const projects = gitcms.getProjects()
+  const autopanel = useAutoPanel()
+  const projects = autopanel.getProjects()
 
   if (projects.length) {
     return (

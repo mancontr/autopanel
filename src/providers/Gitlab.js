@@ -21,7 +21,7 @@ class Gitlab {
     '&state=gitlab'
   )
 
-  callback = async (gitcms, { location }) => {
+  callback = async (autopanel, { location }) => {
     const q = QueryString.parse(location.hash.substring(1))
     if (q.access_token) {
       const url = prefix + '/user'
@@ -29,7 +29,7 @@ class Gitlab {
         headers: { Authorization: 'Bearer ' + q.access_token }
       })
       const userinfo = await res.json()
-      gitcms.login(q.access_token, {
+      autopanel.login(q.access_token, {
         name: userinfo.name,
         avatar: userinfo.avatar_url,
         provider: this.getId()
@@ -37,8 +37,8 @@ class Gitlab {
     }
   }
 
-  getProjects = async (gitcms) => {
-    const token = gitcms.getToken()
+  getProjects = async (autopanel) => {
+    const token = autopanel.getToken()
     const url = prefix + '/projects?' + QueryString.stringify({
       membership: 'true',
       order_by: 'last_activity_at'
@@ -56,8 +56,8 @@ class Gitlab {
     }))
   }
 
-  getProject = async (gitcms, projectId) => {
-    const token = gitcms.getToken()
+  getProject = async (autopanel, projectId) => {
+    const token = autopanel.getToken()
     const url = prefix + '/projects/' + projectId
     const res = await fetch(url, {
       headers: { Authorization: 'Bearer ' + token }
@@ -73,11 +73,11 @@ class Gitlab {
     }
   }
 
-  getSchema = async (gitcms, projectId) =>
-    this.getFile(gitcms, projectId, '.gitcms')
+  getSchema = async (autopanel, projectId) =>
+    this.getFile(autopanel, projectId, '.autopanel')
 
-  getFile = async (gitcms, projectId, path) => {
-    const token = gitcms.getToken()
+  getFile = async (autopanel, projectId, path) => {
+    const token = autopanel.getToken()
     const encodedPath = encodeURIComponent(path)
     const url = prefix + '/projects/' + projectId +
       '/repository/files/' + encodedPath + '?ref=master'
@@ -89,7 +89,7 @@ class Gitlab {
     return JSON.parse(window.atob(file.content))
   }
 
-  putFiles = async (gitcms, projectId, actions) => {
+  putFiles = async (autopanel, projectId, actions) => {
     const token = window.store.getState().user.token
     const url = prefix + '/projects/' + projectId + '/repository/commits'
     const res = await fetch(url, {
@@ -100,7 +100,7 @@ class Gitlab {
       method: 'POST',
       body: JSON.stringify({
         branch: 'master',
-        commit_message: 'Edited from GitCMS',
+        commit_message: 'Edited from AutoPanel',
         actions: actions
       })
     })

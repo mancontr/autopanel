@@ -4,17 +4,17 @@ import { FormattedMessage } from 'react-intl'
 import { Link } from 'react-router'
 import Config from '../Config'
 import ErrorBoundary from './ErrorBoundary'
-import { WithGitcms, useGitcms } from '../api'
+import { WithAutoPanel, useAutoPanel } from '../api'
 // import './EntityList.sass'
 
 const defaultColumns = [ 'id', 'title', 'name', 'slug', 'date' ]
 
 const EntityList = (props) => {
-  const gitcms = useGitcms()
-  const entities = gitcms.getEntities()
-  const projectId = gitcms.getProjectId()
-  const entityType = gitcms.getEntityType()
-  const typeSchema = gitcms.getEntityTypeSchema()
+  const autopanel = useAutoPanel()
+  const entities = autopanel.getEntities()
+  const projectId = autopanel.getProjectId()
+  const entityType = autopanel.getEntityType()
+  const typeSchema = autopanel.getEntityTypeSchema()
 
   const handleNew = () => {
     props.router.push(`/project/${projectId}/entities/${entityType}/new`)
@@ -80,13 +80,13 @@ const EntityListWrapper = (props) => {
   const fallback = <div className="box"><FormattedMessage id="loading" /></div>
   const error = <div className="box"><FormattedMessage id="entities.error" /></div>
   return (
-    <WithGitcms type={currentType}>
+    <WithAutoPanel type={currentType}>
       <ErrorBoundary fallback={error}>
         <Suspense fallback={fallback}>
           <EntityList router={props.router} />
         </Suspense>
       </ErrorBoundary>
-    </WithGitcms>
+    </WithAutoPanel>
   )
 }
 
