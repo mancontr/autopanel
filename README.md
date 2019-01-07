@@ -18,12 +18,20 @@ their fields and labels, and where to store the data.
 Field types are plugins too, so you can create your own, but we included the
 usual ones you expect on any CMS, like WYSIWYG or date.
 
+Usage
+-----
+
+To try Gitcms, we provide a demo project. Just clone
+[gitcms-app](https://github.com/mancontr/gitcms-app) and use `yarn` and
+`yarn start`. You can use NPM insead, too.
+Either way, the project will start on [localhost:3000](http://localhost:3000).
+
 Developing
 ----------
 
-To run the project locally, just clone it and use `yarn` and `yarn start`.
-You can use NPM insead, too. Either way, the project will start on
-[localhost:3000](http://localhost:3000).
+To try your changes in Gitcms, clone this repo and use `yarn link`, then link it
+in the demo project with `yarn link gitcms`. We also provide a "watch mode" to
+rebuild the bundle on change, which you can start with `yarn watch`.
 
 Work in progress
 ----------------
