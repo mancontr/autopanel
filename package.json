@@ -1,6 +1,6 @@
 {
   "name": "autopanel",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "An extensible CMS using Git as a backend.",
   "repository": "mancontr/autopanel",
   "keywords": [
@@ -19,7 +19,7 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "query-string": "^6.2.0",
+    "query-string": "^4.2.2",
     "react-quill": "^1.3.3"
   },
   "devDependencies": {
