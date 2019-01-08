@@ -2,6 +2,7 @@
 // import DemoProvider from './providers/Demo'
 import JsonArrayStorage from './storages/JsonArray'
 import TextType from './types/Text'
+import SelectType from './types/Select'
 import WysiwygType from './types/Wysiwyg'
 import DateType from './types/Date'
 
@@ -38,6 +39,7 @@ ret.getType = (id) => config.types[id]
 // ret.registerProvider(new DemoProvider())
 ret.registerStorage(JsonArrayStorage)
 ret.registerType(TextType)
+ret.registerType(SelectType)
 ret.registerType(WysiwygType)
 ret.registerType(DateType)
 

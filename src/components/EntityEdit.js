@@ -21,7 +21,14 @@ export const EntityEdit = (props) => {
   const renderFields = () =>
     typeSchema.fields.map((f) => {
       const fieldType = Config.getType(f.type)
-      if (!fieldType) return false
+      if (!fieldType) {
+        const values = { name: f.name, type: f.type }
+        return (
+          <div className="field-missing" key={f.name}>
+            <FormattedMessage id="entities.unknown-type" values={values} />
+          </div>
+        )
+      }
       const Editor = fieldType.edit
       return (
         <div className="box field" key={f.name}>

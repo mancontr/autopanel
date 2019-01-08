@@ -121,6 +121,16 @@ class Demo {
                 'type': 'file',
                 'name': 'avatar',
                 'label': 'Avatar'
+              }, {
+                'type': 'select',
+                'name': 'country',
+                'label': 'Country',
+                'options': [
+                  { value: 'de', label: 'Germany' },
+                  { value: 'ru', label: 'Russia' },
+                  { value: 'es', label: 'Spain' },
+                  { value: 'uk', label: 'United Kingdom' }
+                ]
               }
             ]
           }
@@ -205,10 +215,12 @@ const files = {
   '/authors.json': [
     {
       name: 'William',
-      bio: 'Love all, trust a few, do wrong to none.'
+      bio: 'Love all, trust a few, do wrong to none.',
+      country: 'es'
     }, {
       name: 'Edgar',
-      bio: 'I became insane, with long intervals of horrible sanity.'
+      bio: 'I became insane, with long intervals of horrible sanity.',
+      country: 'ru'
     }
   ]
 }
