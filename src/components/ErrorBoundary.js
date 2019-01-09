@@ -33,13 +33,13 @@ class ErrorBoundary extends React.Component {
       return this.props.fallback || (
         <div className="page-error">
           <svg width="250" height="200" version="1.1" viewBox="0 0 66.1 52.9">
-            <path d={path} fill="#888"/>
-            <g fill="none" stroke="#888"  strokeLinecap="round" strokeWidth=".802">
-              <path d="m20.4 30.5 26.2 6.31"/>
-              <path d="m20 14.1 6.07 5.52"/>
-              <path d="m26.1 14.1-6.07 5.52"/>
-              <path d="m40.7 14 6.07 5.52"/>
-              <path d="m46.7 14-6.07 5.52"/>
+            <path d={path} fill="#888" />
+            <g fill="none" stroke="#888" strokeLinecap="round" strokeWidth=".802">
+              <path d="m20.4 30.5 26.2 6.31" />
+              <path d="m20 14.1 6.07 5.52" />
+              <path d="m26.1 14.1-6.07 5.52" />
+              <path d="m40.7 14 6.07 5.52" />
+              <path d="m46.7 14-6.07 5.52" />
             </g>
           </svg>
           <FormattedMessage id="error.1" />
