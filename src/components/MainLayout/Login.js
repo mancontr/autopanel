@@ -1,6 +1,6 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
-import Config from '../Config'
+import Config from '../../Config'
 import './Login.sass'
 
 export const Login = () => (

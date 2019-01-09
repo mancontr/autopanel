@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { WithAutoPanel } from '../api'
+import { WithAutoPanel } from '../../api'
 import Menu from './Menu'
 import './ProjectLayout.sass'
 

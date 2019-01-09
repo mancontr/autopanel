@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
 import { IndexLink, Link } from 'react-router'
-import { useAutoPanel } from '../api'
+import { useAutoPanel } from '../../api'
 import './Menu.sass'
 
 const Menu = ({ projectId }) => {

@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react'
 import PropTypes from 'prop-types'
 
-import { useAutoPanel } from '../api'
+import { useAutoPanel } from '../../api'
 import Header from './Header'
 import Login from './Login'
 import './MainLayout.sass'
