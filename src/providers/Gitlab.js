@@ -21,7 +21,7 @@ class Gitlab {
     '&state=gitlab'
   )
 
-  callback = async (autopanel, { location }) => {
+  callback = async (autopanel, { router, location }) => {
     const q = QueryString.parse(location.hash.substring(1))
     if (q.access_token) {
       const url = prefix + '/user'
@@ -34,6 +34,7 @@ class Gitlab {
         avatar: userinfo.avatar_url,
         provider: this.getId()
       })
+      router.replace('/')
     }
   }
 

@@ -8,7 +8,6 @@ export const ProviderCallback = (props) => {
   useEffect(() => {
     const provider = props.params.provider
     autopanel.callback(provider, props)
-      .then(() => props.router.replace('/'))
   }, [])
 
   return <h1><FormattedMessage id="loading" /></h1>

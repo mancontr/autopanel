@@ -38,10 +38,13 @@ class Demo {
    *   - props: The props received by the callback component, which include
    *            the router-provided info (location, router, ...)
    */
-  callback = async (autopanel) => autopanel.login('fake-token', {
-    name: 'Anonymous',
-    provider: this.getId()
-  })
+  callback = async (autopanel, { router }) => {
+    autopanel.login('fake-token', {
+      name: 'Anonymous',
+      provider: this.getId()
+    })
+    router.replace('/')
+  }
 
   /**
    * List all the projects the current user can access.
