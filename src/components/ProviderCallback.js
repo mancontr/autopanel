@@ -3,19 +3,17 @@ import PropTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
 import { useAutoPanel } from '../api'
 
-export const ProviderCallback = (props) => {
+export const ProviderCallback = ({ provider }) => {
   const autopanel = useAutoPanel()
   useEffect(() => {
-    const provider = props.params.provider
-    autopanel.callback(provider, props)
+    autopanel.callback(provider)
   }, [])
 
   return <h1><FormattedMessage id="loading" /></h1>
 }
 
 ProviderCallback.propTypes = {
-  params: PropTypes.object.isRequired,
-  router: PropTypes.object.isRequired
+  provider: PropTypes.string.isRequired
 }
 
 export default ProviderCallback

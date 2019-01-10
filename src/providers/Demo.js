@@ -38,12 +38,12 @@ class Demo {
    *   - props: The props received by the callback component, which include
    *            the router-provided info (location, router, ...)
    */
-  callback = async (autopanel, { router }) => {
+  callback = async (autopanel) => {
     autopanel.login('fake-token', {
       name: 'Anonymous',
       provider: this.getId()
     })
-    router.replace('/')
+    autopanel.go('/')
   }
 
   /**
