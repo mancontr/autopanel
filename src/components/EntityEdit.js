@@ -6,6 +6,36 @@ import ErrorBoundary from './ErrorBoundary'
 import { WithAutoPanel, useAutoPanel } from '../api'
 import './EntityEdit.sass'
 
+export const EditField = ({ field, value, onChange }) => {
+  const fieldType = Config.getType(field.type)
+  if (!fieldType) {
+    const values = { name: field.name, type: field.type }
+    return (
+      <div className="field-missing">
+        <FormattedMessage id="entities.unknown-type" values={values} />
+      </div>
+    )
+  }
+  const Editor = fieldType.edit
+  return (
+    <div className="box field">
+      <div className="label">{field.label || field.name}</div>
+      {field.description && (
+        <div className="description">{field.description}</div>
+      )}
+      <Editor field={field}
+        value={value}
+        onChange={onChange} />
+    </div>
+  )
+}
+
+EditField.propTypes = {
+  field: PropTypes.object.isRequired,
+  value: PropTypes.any,
+  onChange: PropTypes.func
+}
+
 export const EntityEdit = () => {
   const autopanel = useAutoPanel()
   const id = autopanel.getEntityId()
@@ -19,29 +49,14 @@ export const EntityEdit = () => {
   const [modified, setModified] = useState(false)
 
   const renderFields = () =>
-    typeSchema.fields.map((f) => {
-      const fieldType = Config.getType(f.type)
-      if (!fieldType) {
-        const values = { name: f.name, type: f.type }
-        return (
-          <div className="field-missing" key={f.name}>
-            <FormattedMessage id="entities.unknown-type" values={values} />
-          </div>
-        )
-      }
-      const Editor = fieldType.edit
-      return (
-        <div className="box field" key={f.name}>
-          <div className="label">{f.label || f.name}</div>
-          {f.description && (
-            <div className="description">{f.description}</div>
-          )}
-          <Editor field={f}
-            value={entity[f.name]}
-            onChange={handleChange(f.name)} />
-        </div>
-      )
-    })
+    typeSchema.fields.map((f) =>
+      <EditField
+        key={f.name}
+        field={f}
+        value={entity[f.name]}
+        onChange={handleChange(f.name)}
+      />
+    )
 
   const handleChange = (field) => (value) => {
     setEntity({ ...entity, [field]: value })

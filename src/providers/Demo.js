@@ -125,14 +125,31 @@ class Demo {
                 'name': 'avatar',
                 'label': 'Avatar'
               }, {
-                'type': 'select',
-                'name': 'country',
-                'label': 'Country',
-                'options': [
-                  { value: 'de', label: 'Germany' },
-                  { value: 'ru', label: 'Russia' },
-                  { value: 'es', label: 'Spain' },
-                  { value: 'uk', label: 'United Kingdom' }
+                'type': 'group',
+                'name': 'address',
+                'label': 'Address',
+                'contents': [
+                  {
+                    'type': 'text',
+                    'name': 'street',
+                    'label': 'Street',
+                    'placeholder': 'Street...'
+                  }, {
+                    'type': 'text',
+                    'name': 'zip',
+                    'label': 'ZIP code',
+                    'placeholder': '12345'
+                  }, {
+                    'type': 'select',
+                    'name': 'country',
+                    'label': 'Country',
+                    'options': [
+                      { value: 'de', label: 'Germany' },
+                      { value: 'ru', label: 'Russia' },
+                      { value: 'es', label: 'Spain' },
+                      { value: 'uk', label: 'United Kingdom' }
+                    ]
+                  }
                 ]
               }
             ]
@@ -219,11 +236,19 @@ const files = {
     {
       name: 'William',
       bio: 'Love all, trust a few, do wrong to none.',
-      country: 'es'
+      address: {
+        street: 'C\\ Gran vía',
+        zip: '15003',
+        country: 'es'
+      }
     }, {
       name: 'Edgar',
       bio: 'I became insane, with long intervals of horrible sanity.',
-      country: 'ru'
+      address: {
+        street: 'Gorbachov St.',
+        zip: '19001',
+        country: 'ru'
+      }
     }
   ]
 }

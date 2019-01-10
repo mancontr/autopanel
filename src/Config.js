@@ -5,6 +5,7 @@ import TextType from './types/Text'
 import SelectType from './types/Select'
 import WysiwygType from './types/Wysiwyg'
 import DateType from './types/Date'
+import GroupType from './types/Group'
 
 const config = {
   providers: {},
@@ -42,5 +43,6 @@ ret.registerType(TextType)
 ret.registerType(SelectType)
 ret.registerType(WysiwygType)
 ret.registerType(DateType)
+ret.registerType(GroupType)
 
 export default ret
