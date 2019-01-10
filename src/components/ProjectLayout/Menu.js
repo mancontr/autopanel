@@ -10,18 +10,27 @@ const Menu = ({ projectId }) => {
   const autopanel = useAutoPanel()
   const schema = autopanel.optional(() => autopanel.getSchema())
 
+  const prefix = autopanel.getSettings().prefix || ''
+  const fullPath = window.location.pathname
+  const extraPath = fullPath.substring(prefix.length + base.length)
+
   const entries = []
+
+  let dashboardClass = 'entry'
+  if (extraPath === '') dashboardClass += ' active'
   entries.push(
-    <Link className="entry" to={base} key="dashboard">
+    <Link className={dashboardClass} to={base} key="dashboard">
       <span className="icon icon-gauge" />
       <FormattedMessage id="dashboard" />
     </Link>
   )
 
   if (schema) {
+    let entitiesClass = 'entry'
+    if (extraPath.startsWith('/entities')) entitiesClass += ' active'
     entries.push(
       <div className="menu-collapsable" key="entities">
-        <Link className="entry" to={base + '/entities'}>
+        <Link className={entitiesClass} to={base + '/entities'}>
           <span className="icon icon-doc-text" />
           <FormattedMessage id="entities" />
         </Link>
@@ -37,8 +46,10 @@ const Menu = ({ projectId }) => {
     )
   }
 
+  let settingsClass = 'entry'
+  if (extraPath === '/settings') settingsClass += ' active'
   entries.push(
-    <Link className="entry" to={base + '/settings'}
+    <Link className={settingsClass} to={base + '/settings'}
       key="settings">
       <span className="icon icon-cog" />
       <FormattedMessage id="settings" />
