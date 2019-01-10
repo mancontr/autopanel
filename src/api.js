@@ -22,8 +22,8 @@ const useUser = (parent) => {
 }
 
 // Cache for Suspense promises
-const usePromiseCache = (parent) => {
-  const [cache] = useState(() => parent.cache || new Map())
+const usePromiseCache = () => {
+  const [cache] = useState(() => new Map())
   const cacheRequest = (key, action) => {
     if (!cache.has(key)) {
       const promise = action().then(
@@ -43,10 +43,14 @@ const usePromiseCache = (parent) => {
 export const WithAutoPanel = ({ project, type, id, settings, children }) => {
   const parent = useContext(AutoPanelContext)
   const [user, setUser] = useUser(parent)
-  const [cache, cacheRequest] = usePromiseCache(parent)
+  const [cache, cacheRequest] = usePromiseCache()
+
+  // Shorthands
+  const pdata = parent.data
+  const papi = parent.api
 
   // Mix the data from props with parent data, if any
-  const data = Object.assign({}, parent.data,
+  const data = Object.assign({}, pdata,
     project && { project },
     type && { type },
     id && { id },
@@ -75,16 +79,19 @@ export const WithAutoPanel = ({ project, type, id, settings, children }) => {
     getUser: () => user.userinfo,
     getProvider: () => Config.getProvider(user.userinfo.provider),
     getProjects: () => {
+      if (papi) return papi.getProjects()
       const provider = api.getProvider()
       return cacheRequest('projects', () => provider.getProjects(api))
     },
     getProjectId: () => data.project,
     getProject: (projectId = data.project) => {
+      if (papi && pdata.project) return papi.getProject(projectId)
       const provider = api.getProvider()
       return cacheRequest('project#' + projectId,
         () => provider.getProject(api, projectId))
     },
     getSchema: (projectId = data.project) => {
+      if (papi && pdata.project) return papi.getSchema(projectId)
       const provider = api.getProvider()
       return cacheRequest('schema#' + projectId,
         () => provider.getSchema(api, projectId))
@@ -97,6 +104,7 @@ export const WithAutoPanel = ({ project, type, id, settings, children }) => {
       return ret
     },
     getEntities: (type = data.type, projectId = data.project) => {
+      if (papi && pdata.type) return papi.getEntities(type, projectId)
       const typeSchema = api.getEntityTypeSchema(type, projectId)
       const storage = Config.getStorage(typeSchema.storage.type)
       return cacheRequest('entities#' + projectId + '#' + type,
@@ -104,6 +112,7 @@ export const WithAutoPanel = ({ project, type, id, settings, children }) => {
     },
     getEntityId: () => data.id,
     getEntity: (id = data.id, type = data.type, projectId = data.project) => {
+      if (papi && pdata.id) return papi.getEntity(id, type, projectId)
       const typeSchema = api.getEntityTypeSchema(type, projectId)
       const storage = Config.getStorage(typeSchema.storage.type)
       return cacheRequest('entities#' + projectId + '#' + type + '#' + id,

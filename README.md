@@ -2,14 +2,14 @@ AutoPanel
 =========
 
 AutoPanel is an extensible generic CMS, which uses a schema to learn about your
-domain entities, and uses any kind of backend to store the data.
+domain entities, and can use any kind of backend to store the data.
 
 How it works
 ------------
 
-To access your projects, you login with a login provider. The client uses your
-credentials to read and update your projects on your behalf, but they don't
-ever leave your computer.
+You start by picking a provider among the enabled ones. It will take you to
+whatever authentication it needs, and start performing requests to make
+operations against the backend on your behalf.
 Didn't find your favourite provider?
 It's easy to add new ones with our plugin system.
 
@@ -38,6 +38,3 @@ Work in progress
 ----------------
 
 This is alpha software. Try it, but don't use it in production yet.
-
-Known bugs: We don't invalidate caches yet, so entities/lists/...
-can't get updated.
