@@ -6,7 +6,7 @@ import ErrorBoundary from './ErrorBoundary'
 import { WithAutoPanel, useAutoPanel } from '../api'
 import './EntityEdit.sass'
 
-export const EntityEdit = (props) => {
+export const EntityEdit = () => {
   const autopanel = useAutoPanel()
   const id = autopanel.getEntityId()
   const type = autopanel.getEntityType()
@@ -53,7 +53,7 @@ export const EntityEdit = (props) => {
       autopanel.createEntity(entity)
         .then((res) => {
           const newId = res.id
-          props.router.push(
+          autopanel.go(
             '/project/' + projectId + '/entities/' + type + '/' + newId
           )
         })
@@ -65,9 +65,7 @@ export const EntityEdit = (props) => {
 
   const handleRemove = () => {
     autopanel.removeEntity()
-      .then(() => props.router.push(
-        '/project/' + projectId + '/entities/' + type
-      ))
+      .then(() => autopanel.go('/project/' + projectId + '/entities/' + type))
   }
 
   const titleId = 'entities.title.' + (isNew ? 'create' : 'edit')
@@ -93,20 +91,14 @@ export const EntityEdit = (props) => {
   )
 }
 
-EntityEdit.propTypes = {
-  router: PropTypes.object.isRequired
-}
-
-const EntityEditWrapper = (props) => {
-  const currentType = props.params.entityType
-  const currentId = props.params.entityId
+const EntityEditWrapper = ({ entityType, entityId }) => {
   const fallback = <div className="box"><FormattedMessage id="loading" /></div>
   const error = <div className="box"><FormattedMessage id="entities.error" /></div>
   return (
-    <WithAutoPanel type={currentType} id={currentId}>
+    <WithAutoPanel type={entityType} id={entityId}>
       <ErrorBoundary fallback={error}>
         <Suspense fallback={fallback}>
-          <EntityEdit router={props.router} />
+          <EntityEdit />
         </Suspense>
       </ErrorBoundary>
     </WithAutoPanel>
@@ -114,8 +106,8 @@ const EntityEditWrapper = (props) => {
 }
 
 EntityEditWrapper.propTypes = {
-  params: PropTypes.object.isRequired,
-  router: PropTypes.object.isRequired
+  entityType: PropTypes.string.isRequired,
+  entityId: PropTypes.string
 }
 
 export default EntityEditWrapper

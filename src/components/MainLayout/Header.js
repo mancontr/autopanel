@@ -1,6 +1,6 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
-import { Link } from 'react-router'
+import { Link } from '../Link'
 import { useAutoPanel } from '../../api'
 
 import './Header.sass'

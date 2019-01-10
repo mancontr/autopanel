@@ -5,14 +5,13 @@ import { WithAutoPanel } from '../../api'
 import Menu from './Menu'
 import './ProjectLayout.sass'
 
-export const ProjectLayout = (props) => {
-  const projectId = props.params.projectId
+export const ProjectLayout = ({ children, projectId }) => {
   return (
     <WithAutoPanel project={projectId}>
       <div id="project-wrapper">
         <Menu projectId={projectId} />
         <main>
-          {props.children}
+          {children}
         </main>
       </div>
     </WithAutoPanel>
@@ -20,8 +19,8 @@ export const ProjectLayout = (props) => {
 }
 
 ProjectLayout.propTypes = {
-  children: PropTypes.element,
-  params: PropTypes.object.isRequired
+  children: PropTypes.any,
+  projectId: PropTypes.string.isRequired
 }
 
 export default ProjectLayout

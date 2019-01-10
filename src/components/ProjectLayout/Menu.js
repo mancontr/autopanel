@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
-import { IndexLink, Link } from 'react-router'
+import { Link } from '../Link'
 import { useAutoPanel } from '../../api'
 import './Menu.sass'
 
@@ -12,24 +12,23 @@ const Menu = ({ projectId }) => {
 
   const entries = []
   entries.push(
-    <IndexLink className="entry" activeClassName="active" to={base}
-      key="dashboard">
+    <Link className="entry" to={base} key="dashboard">
       <span className="icon icon-gauge" />
       <FormattedMessage id="dashboard" />
-    </IndexLink>
+    </Link>
   )
 
   if (schema) {
     entries.push(
       <div className="menu-collapsable" key="entities">
-        <Link className="entry" activeClassName="active" to={base + '/entities'}>
+        <Link className="entry" to={base + '/entities'}>
           <span className="icon icon-doc-text" />
           <FormattedMessage id="entities" />
         </Link>
         <div className="children">
           {schema.entities.map((entity) => (
-            <Link className="entry subentry" activeClassName="active"
-              key={entity.name} to={base + '/entities/' + entity.name}>
+            <Link className="entry subentry" key={entity.name}
+              to={base + '/entities/' + entity.name}>
               {entity.label || entity.name}
             </Link>
           ))}
@@ -39,7 +38,7 @@ const Menu = ({ projectId }) => {
   }
 
   entries.push(
-    <Link className="entry" activeClassName="active" to={base + '/settings'}
+    <Link className="entry" to={base + '/settings'}
       key="settings">
       <span className="icon icon-cog" />
       <FormattedMessage id="settings" />

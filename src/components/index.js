@@ -1,4 +1,4 @@
-import Wrapper from './Wrapper'
+import AutoPanel from './AutoPanel'
 import MainLayout from './MainLayout/MainLayout'
 import ProjectLayout from './ProjectLayout/ProjectLayout'
 import ProjectPicker from './ProjectPicker'
@@ -10,7 +10,7 @@ import EntityEdit from './EntityEdit'
 import Settings from './Settings'
 
 export {
-  Wrapper,
+  AutoPanel,
   MainLayout,
   ProjectLayout,
   ProjectPicker,

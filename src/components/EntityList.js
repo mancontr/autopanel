@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react'
 import PropTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
-import { Link } from 'react-router'
+import { Link } from './Link'
 import Config from '../Config'
 import ErrorBoundary from './ErrorBoundary'
 import { WithAutoPanel, useAutoPanel } from '../api'
@@ -9,7 +9,7 @@ import { WithAutoPanel, useAutoPanel } from '../api'
 
 const defaultColumns = [ 'id', 'title', 'name', 'slug', 'date' ]
 
-const EntityList = (props) => {
+const EntityList = () => {
   const autopanel = useAutoPanel()
   const entities = autopanel.getEntities()
   const projectId = autopanel.getProjectId()
@@ -17,7 +17,7 @@ const EntityList = (props) => {
   const typeSchema = autopanel.getEntityTypeSchema()
 
   const handleNew = () => {
-    props.router.push(`/project/${projectId}/entities/${entityType}/new`)
+    autopanel.go(`/project/${projectId}/entities/${entityType}/new`)
   }
 
   const renderCell = (fieldType, value) => {
@@ -71,19 +71,14 @@ const EntityList = (props) => {
   )
 }
 
-EntityList.propTypes = {
-  router: PropTypes.object.isRequired
-}
-
-const EntityListWrapper = (props) => {
-  const currentType = props.params.entityType
+const EntityListWrapper = ({ entityType }) => {
   const fallback = <div className="box"><FormattedMessage id="loading" /></div>
   const error = <div className="box"><FormattedMessage id="entities.error" /></div>
   return (
-    <WithAutoPanel type={currentType}>
+    <WithAutoPanel type={entityType}>
       <ErrorBoundary fallback={error}>
         <Suspense fallback={fallback}>
-          <EntityList router={props.router} />
+          <EntityList />
         </Suspense>
       </ErrorBoundary>
     </WithAutoPanel>
@@ -91,8 +86,7 @@ const EntityListWrapper = (props) => {
 }
 
 EntityListWrapper.propTypes = {
-  params: PropTypes.object.isRequired,
-  router: PropTypes.object.isRequired
+  entityType: PropTypes.string.isRequired
 }
 
 export default EntityListWrapper

@@ -3,10 +3,10 @@ import PropTypes from 'prop-types'
 import { WithAutoPanel } from '../api'
 import ErrorBoundary from './ErrorBoundary'
 
-const Wrapper = ({ children }) => {
+const Wrapper = ({ settings, children }) => {
   return (
     <ErrorBoundary>
-      <WithAutoPanel>
+      <WithAutoPanel settings={settings}>
         {children}
       </WithAutoPanel>
     </ErrorBoundary>
@@ -14,7 +14,8 @@ const Wrapper = ({ children }) => {
 }
 
 Wrapper.propTypes = {
-  children: PropTypes.element
+  settings: PropTypes.object,
+  children: PropTypes.any
 }
 
 export default Wrapper

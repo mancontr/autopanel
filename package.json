@@ -1,6 +1,6 @@
 {
   "name": "autopanel",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "An extensible CMS using Git as a backend.",
   "repository": "mancontr/autopanel",
   "keywords": [
@@ -45,7 +45,6 @@
   "peerDependencies": {
     "react": "16.7.0-alpha.2",
     "react-dom": "16.7.0-alpha.2",
-    "react-intl": "^2.7.2",
-    "react-router": "3.0.5"
+    "react-intl": "^2.7.2"
   }
 }

@@ -13,7 +13,7 @@ const ChildrenOrLogin = ({ children }) => {
 }
 
 ChildrenOrLogin.propTypes = {
-  children: PropTypes.element
+  children: PropTypes.any
 }
 
 export const MainLayout = ({ children }) => {
@@ -28,7 +28,7 @@ export const MainLayout = ({ children }) => {
 }
 
 MainLayout.propTypes = {
-  children: PropTypes.element
+  children: PropTypes.any
 }
 
 export default MainLayout

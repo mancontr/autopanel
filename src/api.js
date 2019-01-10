@@ -40,7 +40,7 @@ const usePromiseCache = (parent) => {
   return [cache, cacheRequest]
 }
 
-export const WithAutoPanel = ({ project, type, id, children }) => {
+export const WithAutoPanel = ({ project, type, id, settings, children }) => {
   const parent = useContext(AutoPanelContext)
   const [user, setUser] = useUser(parent)
   const [cache, cacheRequest] = usePromiseCache(parent)
@@ -49,7 +49,8 @@ export const WithAutoPanel = ({ project, type, id, children }) => {
   const data = Object.assign({}, parent.data,
     project && { project },
     type && { type },
-    id && { id }
+    id && { id },
+    settings && { settings }
   )
 
   // API methods
@@ -68,6 +69,8 @@ export const WithAutoPanel = ({ project, type, id, children }) => {
     },
     login: (token, userinfo) => { setUser({ token, userinfo }) },
     logout: () => { setUser({}) },
+    getSettings: () => data.settings,
+    go: (url) => data.settings.navigate((data.settings.prefix || '') + url),
     getToken: () => user.token,
     getUser: () => user.userinfo,
     getProvider: () => Config.getProvider(user.userinfo.provider),
@@ -132,6 +135,7 @@ export const WithAutoPanel = ({ project, type, id, children }) => {
 }
 
 WithAutoPanel.propTypes = {
+  settings: PropTypes.object,
   project: PropTypes.string,
   type: PropTypes.string,
   id: PropTypes.string,

@@ -21,7 +21,6 @@ export default {
     'prop-types',
     'react',
     'react-intl',
-    'react-router',
     'query-string'
   ]
 }

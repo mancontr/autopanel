@@ -1,14 +1,13 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
-import { Link } from 'react-router'
+import { Link } from './Link'
 import { useAutoPanel } from '../api'
-// import './Dashboard.sass'
 
-const EntityTypes = ({ params }) => {
+const EntityTypes = () => {
   const autopanel = useAutoPanel()
   const schema = autopanel.getSchema()
-  const prefix = '/project/' + params.projectId + '/entities/'
+  const projectId = autopanel.getProjectId()
+  const prefix = '/project/' + projectId + '/entities/'
   return (
     <div id="entities">
       <h1><FormattedMessage id="entities" /></h1>
@@ -38,10 +37,6 @@ const EntityTypes = ({ params }) => {
       </div>
     </div>
   )
-}
-
-EntityTypes.propTypes = {
-  params: PropTypes.object.isRequired
 }
 
 export default EntityTypes
