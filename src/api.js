@@ -9,7 +9,7 @@ const useUser = (parent) => {
   const [user, setUser] = useState(() => {
     if (!parent.user) {
       // At root AutoPanel, load initial data from localStorage
-      return JSON.parse(localStorage.getItem('user'))
+      return JSON.parse(localStorage.getItem('user')) || {}
     } else {
       return parent.user
     }
