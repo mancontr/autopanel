@@ -1,3 +1,8 @@
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/mancontr/autopanel/blob/master/LICENSE)
+[![npm version](https://img.shields.io/npm/v/autopanel.svg?style=flat)](https://www.npmjs.com/package/autopanel)
+[![Build Status](https://travis-ci.org/mancontr/autopanel.svg?branch=master)](https://travis-ci.org/mancontr/autopanel)
+[![Dependencies](https://david-dm.org/GlueDigital/universal-scripts.svg)](https://david-dm.org/mancontr/autopanel)
+
 AutoPanel
 =========
 

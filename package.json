@@ -16,6 +16,7 @@
   "scripts": {
     "prepare": "rollup --config",
     "watch": "rollup --config --watch",
+    "test": "eslint src",
     "lint": "eslint src"
   },
   "dependencies": {
