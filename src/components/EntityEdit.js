@@ -42,8 +42,8 @@ export const EntityEdit = () => {
   const type = autopanel.getEntityType()
   const projectId = autopanel.getProjectId()
   const typeSchema = autopanel.getEntityTypeSchema()
-  const currentEntity = autopanel.getEntity() || {}
   const isNew = id === undefined
+  const currentEntity = (!isNew && autopanel.getEntity()) || {}
 
   const [entity, setEntity] = useState(currentEntity)
   const [modified, setModified] = useState(false)
