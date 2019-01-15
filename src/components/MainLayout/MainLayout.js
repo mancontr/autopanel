@@ -6,29 +6,32 @@ import Header from './Header'
 import Login from './Login'
 import './MainLayout.sass'
 
-const ChildrenOrLogin = ({ children }) => {
+const ChildrenOrLogin = ({ children, login }) => {
   const autopanel = useAutoPanel()
   const user = autopanel.getUser()
-  return <div id="content">{user ? children : <Login />}</div>
+  const LoginComponent = login || Login
+  return <div id="content">{user ? children : <LoginComponent />}</div>
 }
 
 ChildrenOrLogin.propTypes = {
-  children: PropTypes.any
+  children: PropTypes.any,
+  login: PropTypes.element
 }
 
-export const MainLayout = ({ children }) => {
+export const MainLayout = ({ children, login }) => {
   return (
     <div id="main-layout">
       <Suspense fallback={'Loading...'}>
         <Header />
-        <ChildrenOrLogin children={children} />
+        <ChildrenOrLogin children={children} login={login} />
       </Suspense>
     </div>
   )
 }
 
 MainLayout.propTypes = {
-  children: PropTypes.any
+  children: PropTypes.any,
+  login: PropTypes.element
 }
 
 export default MainLayout
