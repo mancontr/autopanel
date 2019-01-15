@@ -20,7 +20,7 @@ ChildrenOrLogin.propTypes = {
 
 export const MainLayout = ({ children, login }) => {
   return (
-    <div id="main-layout">
+    <div id="autopanel">
       <Suspense fallback={'Loading...'}>
         <Header />
         <ChildrenOrLogin children={children} login={login} />

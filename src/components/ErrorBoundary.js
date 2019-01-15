@@ -31,7 +31,7 @@ class ErrorBoundary extends React.Component {
       '-60.2c-1.03 0-1.87-.834-1.87-1.87v-44.3c0-1.04.832-1.87 1.87-1.87z'
     if (this.state.hasError) {
       return this.props.fallback || (
-        <div className="page-error">
+        <div className="autopanel-error-block">
           <svg width="250" height="200" version="1.1" viewBox="0 0 66.1 52.9">
             <path d={path} fill="#888" />
             <g fill="none" stroke="#888" strokeLinecap="round" strokeWidth=".802">
