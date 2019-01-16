@@ -118,15 +118,15 @@ export const WithAutoPanel = ({ project, type, id, settings, children }) => {
       return cacheRequest('entities#' + projectId + '#' + type + '#' + id,
         () => storage.getEntity(api, id, type, projectId))
     },
-    saveEntity: (entity, extraFiles, id = data.id, type = data.type, projectId = data.project) => {
+    saveEntity: (entity, attachments, id = data.id, type = data.type, projectId = data.project) => {
       const typeSchema = api.getEntityTypeSchema(type, projectId)
       const storage = Config.getStorage(typeSchema.storage.type)
-      return storage.saveEntity(api, entity, extraFiles, id, type, projectId)
+      return storage.saveEntity(api, entity, attachments, id, type, projectId)
     },
-    createEntity: (entity, extraFiles, id = data.id, type = data.type, projectId = data.project) => {
+    createEntity: (entity, attachments, id = data.id, type = data.type, projectId = data.project) => {
       const typeSchema = api.getEntityTypeSchema(type, projectId)
       const storage = Config.getStorage(typeSchema.storage.type)
-      return storage.createEntity(api, entity, extraFiles, type, projectId)
+      return storage.createEntity(api, entity, attachments, type, projectId)
     },
     removeEntity: (id = data.id, type = data.type, projectId = data.project) => {
       const typeSchema = api.getEntityTypeSchema(type, projectId)

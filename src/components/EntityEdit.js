@@ -48,24 +48,26 @@ export const EntityEdit = () => {
   const [entity, setEntity] = useState(currentEntity)
   const [modified, setModified] = useState(false)
 
-  const renderFields = () =>
-    typeSchema.fields.map((f) =>
-      <EditField
-        key={f.name}
-        field={f}
-        value={entity[f.name]}
-        onChange={handleChange(f.name)}
-      />
-    )
-
   const handleChange = (field) => (value) => {
     setEntity({ ...entity, [field]: value })
     setModified(true)
   }
 
   const handleSave = () => {
+    const attachments = []
+
+    // Run pre-save hook
+    typeSchema.fields.forEach((field) => {
+      const fieldType = Config.getType(field.type)
+      const value = entity[field.name]
+      fieldType && fieldType.preSave && fieldType.preSave({
+        field, value, entity, attachments
+      })
+    })
+
+    // Create or update entity
     if (isNew) {
-      autopanel.createEntity(entity)
+      autopanel.createEntity(entity, attachments)
         .then((res) => {
           const newId = res.id
           autopanel.go(
@@ -73,7 +75,7 @@ export const EntityEdit = () => {
           )
         })
     } else {
-      autopanel.saveEntity(entity)
+      autopanel.saveEntity(entity, attachments)
         .then(() => setModified(false))
     }
   }
@@ -92,7 +94,11 @@ export const EntityEdit = () => {
   return (
     <div id="entity-edit">
       <h1><FormattedMessage id={titleId} values={titleValues} /></h1>
-      {renderFields()}
+      {typeSchema.fields.map((f) =>
+        <EditField key={f.name} field={f}
+          value={entity[f.name]} onChange={handleChange(f.name)}
+        />
+      )}
       <button className="save button" type="button" onClick={handleSave}
         disabled={!modified}>
         <FormattedMessage id={modified ? 'save' : 'saved'} />
