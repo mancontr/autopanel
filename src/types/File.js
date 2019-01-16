@@ -53,7 +53,7 @@ const FileTypeEditor = ({ field, value, onChange }) => {
 
 FileTypeEditor.propTypes = {
   field: PropTypes.object.isRequired,
-  value: PropTypes.oneOf(PropTypes.object, PropTypes.bool),
+  value: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   onChange: PropTypes.func.isRequired
 }
 
@@ -67,7 +67,11 @@ FileTypeViewer.propTypes = {
 
 const preSave = ({ field, value, entity, attachments }) => {
   if (value) {
-    attachments.push({ type: 'file', file: value })
+    attachments.push({
+      type: 'file',
+      field: field.name,
+      file: value
+    })
     const { name, size, type, lastModified } = value
     entity[field.name] = { name, size, type, lastModified }
   }
