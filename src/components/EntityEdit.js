@@ -54,20 +54,21 @@ export const EntityEdit = () => {
   }
 
   const handleSave = () => {
+    const entityCopy = { ...entity }
     const attachments = []
 
     // Run pre-save hook
     typeSchema.fields.forEach((field) => {
       const fieldType = Config.getType(field.type)
-      const value = entity[field.name]
+      const value = entityCopy[field.name]
       fieldType && fieldType.preSave && fieldType.preSave({
-        field, value, entity, attachments
+        field, value, entity: entityCopy, attachments
       })
     })
 
     // Create or update entity
     if (isNew) {
-      autopanel.createEntity(entity, attachments)
+      autopanel.createEntity(entityCopy, attachments)
         .then((res) => {
           const newId = res.id
           autopanel.go(
@@ -75,7 +76,7 @@ export const EntityEdit = () => {
           )
         })
     } else {
-      autopanel.saveEntity(entity, attachments)
+      autopanel.saveEntity(entityCopy, attachments)
         .then(() => setModified(false))
     }
   }
