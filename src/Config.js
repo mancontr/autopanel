@@ -7,6 +7,7 @@ import WysiwygType from './types/Wysiwyg'
 import DateType from './types/Date'
 import FileType from './types/File'
 import GroupType from './types/Group'
+import RelationshipType from './types/Relationship'
 
 const config = {
   providers: {},
@@ -46,5 +47,6 @@ ret.registerType(WysiwygType)
 ret.registerType(DateType)
 ret.registerType(FileType)
 ret.registerType(GroupType)
+ret.registerType(RelationshipType)
 
 export default ret

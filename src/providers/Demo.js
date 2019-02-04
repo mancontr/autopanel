@@ -103,6 +103,11 @@ class Demo {
                 'name': 'date',
                 'label': 'Date',
                 'description': 'The publication date of this article.'
+              }, {
+                'type': 'relationship',
+                'name': 'author',
+                'label': 'Post author',
+                'targetEntity': 'author'
               }
             ]
           }, {
