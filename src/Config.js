@@ -1,6 +1,7 @@
 // import GitlabProvider from './providers/Gitlab'
 // import DemoProvider from './providers/Demo'
 import JsonArrayStorage from './storages/JsonArray'
+import RestStorage from './storages/Rest'
 import TextType from './types/Text'
 import SelectType from './types/Select'
 import WysiwygType from './types/Wysiwyg'
@@ -42,6 +43,7 @@ ret.getType = (id) => config.types[id]
 // ret.registerProvider(new GitlabProvider())
 // ret.registerProvider(new DemoProvider())
 ret.registerStorage(JsonArrayStorage)
+ret.registerStorage(RestStorage)
 ret.registerType(TextType)
 ret.registerType(SelectType)
 ret.registerType(WysiwygType)
