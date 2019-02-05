@@ -229,15 +229,17 @@ const files = {
   '/posts.json': [
     {
       title: 'Demo Post',
-      content: 'This is some <b>text</b>.',
-      date: 1541449329000
+      content: '<p>This is some <strong>text</strong>.</p>',
+      date: 1541449329000,
+      author: '2',
+      place: [42.225507, -8.768352]
     }, {
       title: 'Another post',
-      content: 'Moar <b>text</b>.',
+      content: '<p>Moar <strong>text</strong>.</p>',
       date: 1521999029000
     }, {
       title: 'Last post',
-      content: 'Yay!',
+      content: '<p>Yay!</p>',
       date: 1532473568000
     }
   ],
