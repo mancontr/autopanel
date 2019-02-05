@@ -104,6 +104,10 @@ class Demo {
                 'label': 'Date',
                 'description': 'The publication date of this article.'
               }, {
+                'type': 'location',
+                'name': 'place',
+                'label': 'Place'
+              }, {
                 'type': 'relationship',
                 'name': 'author',
                 'label': 'Post author',

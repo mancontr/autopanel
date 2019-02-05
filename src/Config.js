@@ -6,6 +6,7 @@ import SelectType from './types/Select'
 import WysiwygType from './types/Wysiwyg'
 import DateType from './types/Date'
 import FileType from './types/File'
+import LocationType from './types/Location'
 import GroupType from './types/Group'
 import RelationshipType from './types/Relationship'
 
@@ -46,6 +47,7 @@ ret.registerType(SelectType)
 ret.registerType(WysiwygType)
 ret.registerType(DateType)
 ret.registerType(FileType)
+ret.registerType(LocationType)
 ret.registerType(GroupType)
 ret.registerType(RelationshipType)
 
