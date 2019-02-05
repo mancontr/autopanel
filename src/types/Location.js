@@ -22,6 +22,8 @@ const LocationTypeEditor = ({ field, value, onChange }) => {
       onChange([e.latlng.lat, e.latlng.lng])
     })
 
+    setTimeout(() => mapObject.current.invalidateSize(), 0)
+
   }, [])
 
   // Update map on change
@@ -39,10 +41,6 @@ const LocationTypeEditor = ({ field, value, onChange }) => {
       mapObject.current.setView([0, 0], 1)
     }
   }, [value])
-
-  useEffect(() => {
-    mapObject.current.invalidateSize()
-  })
 
   return <div className="field-map" ref={mapRef} />
 }
