@@ -127,11 +127,14 @@ FileTypeEditor.propTypes = {
   onChange: PropTypes.func.isRequired
 }
 
-const FileTypeViewer = (props) => (
-  <span>{props.value}</span>
-)
+const FileTypeViewer = ({ field, value }) => {
+  if (!value) return false
+  const n = field.multiple ? value.length : 1
+  return <FormattedMessage id="files.num" values={{ n }} />
+}
 
 FileTypeViewer.propTypes = {
+  field: PropTypes.object.isRequired,
   value: PropTypes.any
 }
 

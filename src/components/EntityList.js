@@ -24,7 +24,7 @@ const EntityList = () => {
     const type = Config.getType(fieldType.type)
     if (!type) return false
     const Viewer = type.view
-    return <Viewer value={value} />
+    return <Viewer value={value} field={fieldType} />
   }
 
   const fieldMap = {}

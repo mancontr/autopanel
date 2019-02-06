@@ -51,9 +51,8 @@ LocationTypeEditor.propTypes = {
   onChange: PropTypes.func.isRequired
 }
 
-const LocationTypeViewer = (props) => (
-  <span>{new Date(props.value).toLocaleString()}</span>
-)
+const LocationTypeViewer = ({ value }) =>
+  value ? <span>({value[0]}, {value[1]})</span> : false
 
 LocationTypeViewer.propTypes = {
   value: PropTypes.any
