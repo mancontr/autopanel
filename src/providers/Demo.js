@@ -134,6 +134,11 @@ class Demo {
                 'name': 'avatar',
                 'label': 'Avatar'
               }, {
+                'type': 'file',
+                'name': 'photos',
+                'label': 'Photos',
+                'multiple': true
+              }, {
                 'type': 'group',
                 'name': 'address',
                 'label': 'Address',
