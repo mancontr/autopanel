@@ -11,7 +11,7 @@ export const EditField = ({ field, value, onChange }) => {
   if (!fieldType) {
     const values = { name: field.name, type: field.type }
     return (
-      <div className="field-missing">
+      <div className="field-error">
         <FormattedMessage id="entities.unknown-type" values={values} />
       </div>
     )
@@ -95,11 +95,18 @@ export const EntityEdit = () => {
   return (
     <div id="entity-edit">
       <h1><FormattedMessage id={titleId} values={titleValues} /></h1>
-      {typeSchema.fields.map((f) =>
-        <EditField key={f.name} field={f}
-          value={entity[f.name]} onChange={handleChange(f.name)}
-        />
-      )}
+      {typeSchema.fields.map((f) => {
+        const error =
+          <div className="field-error">
+            <FormattedMessage id="entities.field-error" values={f} />
+          </div>
+        const onChange = handleChange(f.name)
+        return (
+          <ErrorBoundary key={f.name} fallback={error}>
+            <EditField field={f} value={entity[f.name]} onChange={onChange} />
+          </ErrorBoundary>
+        )
+      })}
       <button className="save button" type="button" onClick={handleSave}
         disabled={!modified}>
         <FormattedMessage id={modified ? 'save' : 'saved'} />
