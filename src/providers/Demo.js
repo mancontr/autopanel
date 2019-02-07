@@ -139,6 +139,17 @@ class Demo {
                 'label': 'Photos',
                 'multiple': true
               }, {
+                'type': 'relationship',
+                'name': 'parent',
+                'label': 'Parent',
+                'targetEntity': 'author'
+              }, {
+                'type': 'relationship',
+                'name': 'posts',
+                'label': 'Posts',
+                'targetEntity': 'post',
+                'multiple': true
+              }, {
                 'type': 'group',
                 'name': 'address',
                 'label': 'Address',
@@ -252,6 +263,13 @@ const files = {
     {
       name: 'William',
       bio: 'Love all, trust a few, do wrong to none.',
+      avatar: { name: 'demo.jpg', size: 110000, type: 'image/jpeg', url: 'https://i.imgur.com/Mvwise9b.jpg' },
+      photos: [
+        { name: 'DSC_1234.jpg', size: 3250000, type: 'image/jpeg', url: 'https://i.imgur.com/ODFhxpeb.jpg' },
+        { name: 'Screenshot (245).png', size: 1500000, type: 'image/png', url: 'https://i.imgur.com/Z5o70Jfb.jpg' }
+      ],
+      parent: 1,
+      posts: [3, 1],
       address: {
         street: 'C\\ Gran vía',
         zip: '15003',
