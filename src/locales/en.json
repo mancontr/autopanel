@@ -18,6 +18,8 @@
   "loading": "Loading ...",
   "login": "Sign in",
   "login.choose": "Select a provider:",
+  "login.password": "Password",
+  "login.username": "Username",
   "logout": "Sign out",
   "project.error": "Error loading project.",
   "project.configured.error": "This project doesn't seem to have an associated schema.",

@@ -18,6 +18,8 @@
   "loading": "Cargando ...",
   "login": "Iniciar sesión",
   "login.choose": "Selecciona un proveedor:",
+  "login.password": "Contraseña",
+  "login.username": "Nombre de usuario",
   "logout": "Cerrar sesión",
   "project.error": "No se ha podido cargar el proyecto",
   "project.configured.error": "Este proyecto no parece tener un esquema asociado.",

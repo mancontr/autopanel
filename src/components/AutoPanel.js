@@ -20,6 +20,7 @@ const Wrapper = ({ settings, children, intl }) => {
 
 Wrapper.propTypes = {
   settings: PropTypes.object,
+  intl: PropTypes.object.isRequired,
   children: PropTypes.any
 }
 
