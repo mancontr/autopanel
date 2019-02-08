@@ -7,6 +7,8 @@ const LocationTypeEditor = ({ field, value, onChange }) => {
   const mapRef = useRef()
   const mapObject = useRef()
   const markerLayer = useRef()
+  const changeHandler = useRef()
+  changeHandler.current = onChange
 
   // Initialize map
   useEffect(() => {
@@ -19,7 +21,7 @@ const LocationTypeEditor = ({ field, value, onChange }) => {
     markerLayer.current = L.layerGroup().addTo(mapObject.current)
 
     mapObject.current.on('click', (e) => {
-      onChange([e.latlng.lat, e.latlng.lng])
+      changeHandler.current([e.latlng.lat, e.latlng.lng])
     })
 
     setTimeout(() => mapObject.current.invalidateSize(), 0)
@@ -33,7 +35,7 @@ const LocationTypeEditor = ({ field, value, onChange }) => {
       const marker = L.marker(value, { draggable: 'true' })
       marker.on('dragend', () => {
         const latlng = marker.getLatLng()
-        onChange([latlng.lat, latlng.lng])
+        changeHandler.current([latlng.lat, latlng.lng])
       })
       marker.addTo(markerLayer.current)
       mapObject.current.setView(value, mapObject.current.getZoom() || 5)
