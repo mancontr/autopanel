@@ -21,7 +21,9 @@ const Menu = ({ projectId }) => {
   entries.push(
     <Link className={dashboardClass} to={base} key="dashboard">
       <span className="icon icon-gauge" />
-      <FormattedMessage id="dashboard" />
+      <FormattedMessage id="dashboard">
+        {(txt) => <span className="label">{txt}</span>}
+      </FormattedMessage>
     </Link>
   )
 
@@ -32,7 +34,9 @@ const Menu = ({ projectId }) => {
       <div className="menu-collapsable" key="entities">
         <Link className={entitiesClass} to={base + '/entities'}>
           <span className="icon icon-doc-text" />
-          <FormattedMessage id="entities" />
+          <FormattedMessage id="entities">
+            {(txt) => <span className="label">{txt}</span>}
+          </FormattedMessage>
         </Link>
         <div className="children">
           {schema.entities.map((entity) => (
@@ -52,7 +56,9 @@ const Menu = ({ projectId }) => {
     <Link className={settingsClass} to={base + '/settings'}
       key="settings">
       <span className="icon icon-cog" />
-      <FormattedMessage id="settings" />
+      <FormattedMessage id="settings">
+        {(txt) => <span className="label">{txt}</span>}
+      </FormattedMessage>
     </Link>
   )
 

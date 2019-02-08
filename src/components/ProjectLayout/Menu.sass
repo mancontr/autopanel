@@ -47,13 +47,21 @@
 
     &.subentry
       padding-left: 12px
-      background-color: #32373c
       &.active
         font-weight: bold
         &:after
           display: none
 
   .children
+    background-color: #32373c
     display: none
   .entry.active + .children
     display: block
+
+@media (max-width: 639px)
+  #project-sidebar
+    width: 40px
+    .children
+      display: none !important
+    .entry .label
+      display: none

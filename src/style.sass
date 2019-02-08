@@ -55,6 +55,7 @@
       position: relative
       vertical-align: middle
       width: 200px
+      max-width: 100%
       .thumb
         cursor: pointer
         display: flex
@@ -130,3 +131,14 @@
         margin-left: 6px
       &:hover .remove-rel
         display: inline
+
+@media (max-width: 639px)
+  #autopanel
+    h1
+      padding: 0
+      margin-bottom: -10px
+    main
+      padding: 9px 15px
+
+    .field-map
+      min-height: 250px
