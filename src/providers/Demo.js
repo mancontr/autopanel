@@ -245,7 +245,11 @@ const files = {
   '/posts.json': [
     {
       title: 'Demo Post',
-      content: '<p>This is some <strong>text</strong>.</p>',
+      content:
+        '<p>This is some <strong>text</strong>.</p>' +
+        '<figure><img src="https://i.imgur.com/Mvwise9b.jpg">' +
+        '<figcaption>Images are also allowed.</figcaption></figure>' +
+        '<p>Have fun!</p>',
       date: 1541449329000,
       author: '2',
       place: [42.225507, -8.768352]

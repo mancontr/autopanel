@@ -1,0 +1,24 @@
+.field-type-wysiwyg
+  .quill
+    .ql-editor
+      max-height: calc(100vh - 150px)
+
+      figure
+        img
+          box-shadow: 2px 2px 5px 1px #aaa
+          cursor: default
+          display: block
+          margin: 0 auto 5px
+          max-width: 500px
+          max-height: 400px
+          min-width: 96px
+          min-height: 96px
+        figcaption
+          color: #666
+          font-size: 94%
+          text-align: center
+          &:hover, &:focus
+            outline: 1px dashed #ccc
+
+  input[type="file"]
+    display: none

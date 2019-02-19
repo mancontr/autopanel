@@ -18,7 +18,7 @@ export const EditField = ({ field, value, onChange }) => {
   }
   const Editor = fieldType.edit
   return (
-    <div className="box field">
+    <div className={'box field field-type-' + field.type}>
       <div className="label">{field.label || field.name}</div>
       {field.description && (
         <div className="description">{field.description}</div>
