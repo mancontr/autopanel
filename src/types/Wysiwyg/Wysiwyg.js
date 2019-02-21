@@ -51,6 +51,9 @@ const quillModules = (handleImage) => ({
   }
 })
 
+// Beware: this might leak some memory. Alternatives?
+const filesMap = {}
+
 const QuillWithImages = ({ field, value, onChange }, ref) => {
   const editRef = useRef()
   const fileRef = useRef()
@@ -64,6 +67,7 @@ const QuillWithImages = ({ field, value, onChange }, ref) => {
     const file = e.target.files[0]
     if (!file) return
     const url = window.URL.createObjectURL(file)
+    filesMap[url] = file
     const caption = file.name || 'Image file'
     const quill = editRef.current.getEditor()
     const range = quill.getSelection()
@@ -109,7 +113,14 @@ const preSave = ({ field, value, entity, attachments }) => {
   converter.renderCustomWith((customOp, contextOp) => {
     const { type, value } = customOp.insert
     if (type === 'figure') {
-      // TODO: Do something with the attachments
+      const file = filesMap[value.url]
+      if (file) {
+        attachments.push({
+          type: 'file',
+          field: field.name + '_gallery',
+          file
+        })
+      }
       const url = value.url
         .replace('&', '&amp;')
         .replace('"', '&quot;')
