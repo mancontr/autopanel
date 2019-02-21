@@ -2595,6 +2595,11 @@ query-string@^4.2.2:
     object-assign "^4.1.0"
     strict-uri-encode "^1.0.0"
 
+quill-delta-to-html@^0.10.7:
+  version "0.10.7"
+  resolved "https://registry.yarnpkg.com/quill-delta-to-html/-/quill-delta-to-html-0.10.7.tgz#a767b9dd50d46fe6521614e9eea3c514338d7d8c"
+  integrity sha512-fVVHgH0ic3Og4OuZapL0Z3VZt8FM55bP0O2bDCryrA/jUDaM16r7pNMWk+2aeWZT26qULrMjqtGp7Uqbw97XCQ==
+
 quill-delta@^3.6.2:
   version "3.6.3"
   resolved "https://registry.yarnpkg.com/quill-delta/-/quill-delta-3.6.3.tgz#b19fd2b89412301c60e1ff213d8d860eac0f1032"

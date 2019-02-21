@@ -24,7 +24,10 @@ export default [
       'prop-types',
       'react',
       'react-intl',
-      'query-string'
+      'react-quill',
+      'query-string',
+      'quill',
+      'quill-delta-to-html'
     ]
   }, {
     input: 'src/routes/v4.js',
