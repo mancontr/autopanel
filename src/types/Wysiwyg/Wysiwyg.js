@@ -109,21 +109,21 @@ WysiwygTypeViewer.propTypes = {
 }
 
 const preSave = ({ field, value, entity, attachments }) => {
+  if (typeof value === 'string') return // No conversion needed
   const converter = new QuillDeltaToHtmlConverter(value.ops, {})
   converter.renderCustomWith((customOp, contextOp) => {
     const { type, value } = customOp.insert
     if (type === 'figure') {
-      const file = filesMap[value.url]
+      let url = value.url
+      const file = filesMap[url]
       if (file) {
         attachments.push({
           type: 'file',
           field: field.name + '_gallery',
           file
         })
+        url = '###attachment###'
       }
-      const url = value.url
-        .replace('&', '&amp;')
-        .replace('"', '&quot;')
       const caption = value.caption
         .replace('<', '&lt;')
         .replace('>', '&gt;')

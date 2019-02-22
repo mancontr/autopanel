@@ -65,7 +65,8 @@ const FileTypeEditor = ({ field, value, onChange }) => {
   const inputRef = useRef()
   const replacePos = useRef(-1)
 
-  const entries = field.multiple ? (value || []) : (value ? [value] : [])
+  let entries = value || []
+  entries = Array.isArray(entries) ? entries : [entries]
   const showAddPlaceholder = field.multiple || !value
 
   // Event handlers
@@ -92,7 +93,7 @@ const FileTypeEditor = ({ field, value, onChange }) => {
   }
   const handleRemove = (i) => () => {
     if (field.multiple) {
-      const newList = value.slice()
+      const newList = entries.slice()
       newList.splice(i, 1)
       onChange(newList)
     } else {
@@ -144,7 +145,7 @@ const preSave = ({ field, value, entity, attachments }) => {
     type: 'file',
     field: field.name,
     path: field.path,
-    file: value
+    file: entry
   }))
 
   const values = entries.map((value) => {
@@ -153,7 +154,7 @@ const preSave = ({ field, value, entity, attachments }) => {
     return { name, size, type, lastModified }
   })
 
-  entity[field.name] = field.multiple ? values : values[0]
+  entity[field.name] = field.multiple ? values : values[0] || null
 }
 
 export default {
