@@ -3,14 +3,14 @@ import PropTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
 
 const HumanSize = ({ size }) => {
-  const byteUnits = ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
-  let i = -1
-  do {
+  const byteUnits = ['B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+  let i = 0
+  while (size > 1024) {
     size = size / 1024
     i++
-  } while (size > 1024)
+  }
 
-  return size.toFixed(1) + ' ' + byteUnits[i]
+  return size.toFixed(i > 0 ? 1 : 0) + ' ' + byteUnits[i]
 }
 HumanSize.propTypes = {
   size: PropTypes.number.isRequired
@@ -19,7 +19,7 @@ HumanSize.propTypes = {
 const usePreview = (value) => {
   const [url, setUrl] = useState(false)
   useEffect(() => {
-    if (!value || !value.type.startsWith('image/')) return
+    if (!value || !value.type || !value.type.startsWith('image/')) return
     setUrl(value instanceof File ? URL.createObjectURL(value) : value.url)
     return () => {
       URL.revokeObjectURL(url)
@@ -30,16 +30,18 @@ const usePreview = (value) => {
 
 const FileEntry = ({ value, onRemove, onReplace }) => {
   const url = usePreview(value)
-  let preview
+  let preview = false
   let thumbClass = 'thumb '
   if (url) {
     preview = <img src={url} alt={value.name} />
     thumbClass += 'image'
-  } else {
+  } else if (value.name) {
     const lastDot = value.name.lastIndexOf('.')
     let ext = lastDot > -1 ? value.name.substr(lastDot) : '.*'
     if (ext.length > 5) ext = '.*'
     preview = ext
+    thumbClass += 'ext'
+  } else {
     thumbClass += 'ext'
   }
   return (
@@ -48,8 +50,12 @@ const FileEntry = ({ value, onRemove, onReplace }) => {
         {preview}
       </div>
       <div className="info">
-        <div className="filename">{value.name}</div>
-        <div className="size"><HumanSize size={value.size} /></div>
+        <div className="filename">
+          {value.name || <FormattedMessage id="files.no-name" />}
+        </div>
+        <div className="size">
+          {value.size && <HumanSize size={value.size} />}
+        </div>
       </div>
       <div className="remove-file" onClick={onRemove} />
     </div>

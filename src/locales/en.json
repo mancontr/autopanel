@@ -14,6 +14,7 @@
   "error.2": "Please, reload the page.",
   "files.add": "Add new file",
   "files.none": "No files selected",
+  "files.no-name": "(No name)",
   "files.num": "{n, plural, one {1 file} other {{n} files}}",
   "loading": "Loading ...",
   "login": "Sign in",
