@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Config from '../Config'
 import { EditField } from '../components/EntityEdit'
 
 const GroupTypeEditor = ({ field, value, onChange }) => {
@@ -23,8 +24,23 @@ const GroupTypeViewer = () => (
   <span>...</span>
 )
 
+const preSave = ({ field, value, entity, attachments }) => {
+  const valueCopy = { ...value }
+  field.contents.forEach((child) => {
+    const childFieldType = Config.getType(child.type)
+    childFieldType && childFieldType.preSave && childFieldType.preSave({
+      field: child,
+      value: value[child.name],
+      entity: valueCopy, // Tell children that the entity is this sub-entity only
+      attachments
+    })
+  })
+  entity[field.name] = valueCopy // In case any child updated it
+}
+
 export default {
   name: 'group',
   view: GroupTypeViewer,
-  edit: GroupTypeEditor
+  edit: GroupTypeEditor,
+  preSave
 }
