@@ -3,11 +3,16 @@ import PropTypes from 'prop-types'
 import Config from '../Config'
 import { EditField } from '../components/EntityEdit'
 
+const withFullName = (child, parent) => ({
+  ...child,
+  fullName: (parent.fullName || parent.name) + '.' + child.name
+})
+
 const GroupTypeEditor = ({ field, value, onChange }) => {
   return field.contents.map((child) =>
     <EditField
       key={child.name}
-      field={child}
+      field={withFullName(child, field)}
       value={value && value[child.name]}
       onChange={(v) => onChange({ ...value, [child.name]: v })}
     />
@@ -29,7 +34,7 @@ const preSave = ({ field, value, entity, attachments }) => {
   field.contents.forEach((child) => {
     const childFieldType = Config.getType(child.type)
     childFieldType && childFieldType.preSave && childFieldType.preSave({
-      field: child,
+      field: withFullName(child, field),
       value: value[child.name],
       entity: valueCopy, // Tell children that the entity is this sub-entity only
       attachments

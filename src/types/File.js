@@ -149,7 +149,7 @@ const preSave = ({ field, value, entity, attachments }) => {
   const entries = field.multiple ? (value || []) : (value ? [value] : [])
   entries.forEach((entry) => entry instanceof File && attachments.push({
     type: 'file',
-    field: field.name,
+    field: field.fullName || field.name,
     path: field.path,
     file: entry
   }))
