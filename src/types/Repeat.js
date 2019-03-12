@@ -46,7 +46,6 @@ const preSave = ({ field, value, entity, attachments }) => {
   value.forEach((childValue, i) => {
     subEntity = {}
     const childFieldType = Config.getType(field.content.type)
-    const previousAttatchmentsLength = attachments.length
     childFieldType &&
       childFieldType.preSave &&
       childFieldType.preSave({
@@ -58,12 +57,6 @@ const preSave = ({ field, value, entity, attachments }) => {
         entity: subEntity,
         attachments
       })
-    if (attachments.length > previousAttatchmentsLength) {
-      for (var j = previousAttatchmentsLength; j < attachments.length; j++) {
-        const attachment = attachments[j]
-        attachment.field = field.name + '-' + field.content.name + '-' + i + '-' + attachment.field
-      }
-    }
     value[i] = subEntity
   })
 
