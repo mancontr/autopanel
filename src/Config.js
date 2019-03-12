@@ -3,6 +3,7 @@
 import JsonArrayStorage from './storages/JsonArray'
 import RestStorage from './storages/Rest'
 import TextType from './types/Text'
+import RepeatType from './types/Repeat'
 import SelectType from './types/Select'
 import WysiwygType from './types/Wysiwyg/Wysiwyg'
 import DateType from './types/Date'
@@ -49,6 +50,7 @@ ret.registerType(SelectType)
 ret.registerType(WysiwygType)
 ret.registerType(DateType)
 ret.registerType(FileType)
+ret.registerType(RepeatType)
 ret.registerType(LocationType)
 ret.registerType(GroupType)
 ret.registerType(RelationshipType)
