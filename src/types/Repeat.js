@@ -8,27 +8,36 @@ const RepeatEditor = ({ field, value, onChange }) => {
     <React.Fragment>
       {value
         ? value.map((currentValue, i) => (
-          <EditField
-            key={i}
-            field={{
-              ...field.content,
-              name: field.name + '-' + field.content.name + '-' + i
-            }}
-            value={currentValue[field.name + '-' + field.content.name + '-' + i]}
-            onChange={v => {
-              value[i] = { [field.name + '-' + field.content.name + '-' + i]: v }
-              onChange(value)
-            }}
-          />
+          <React.Fragment key={i}>
+            <EditField
+              field={{
+                ...field.content,
+                name: field.name + '[' + i + ']'
+              }}
+              value={currentValue}
+              onChange={v => {
+                value[i] = v
+                onChange(value)
+              }}
+            />
+            <button
+              onClick={() => {
+                value.splice(i, 1)
+                onChange(value)
+              }}
+            >
+                Remove
+            </button>
+          </React.Fragment>
         ))
         : undefined}
 
       <button
         onClick={() => {
           if (value) {
-            onChange([...value, { [field.name + '-' + field.content.name + '-' + value.length]: undefined }])
+            onChange([...value, undefined])
           } else {
-            onChange([{ [field.name + '-' + field.content.name + '-' + '0']: undefined }])
+            onChange([undefined])
           }
         }}
       >
@@ -39,25 +48,24 @@ const RepeatEditor = ({ field, value, onChange }) => {
 }
 
 const preSave = ({ field, value, entity, attachments }) => {
-  if(!value) return 
-  
+  if (!value) return
+
   let subEntity = {}
 
   value.forEach((childValue, i) => {
-    subEntity = {}
     const childFieldType = Config.getType(field.content.type)
     childFieldType &&
       childFieldType.preSave &&
       childFieldType.preSave({
         field: {
           ...field.content,
-          name: field.name + '-' + field.content.name + '-' + i
+          name: field.name + '[' + i + ']'
         },
-        value: childValue[field.name + '-' + field.content.name + '-' + i],
+        value: childValue,
         entity: subEntity,
         attachments
       })
-    value[i] = subEntity
+    value[i] = subEntity[field.name + '[' + i + ']']
   })
 
   entity[field.name] = value
