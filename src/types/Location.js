@@ -69,5 +69,6 @@ LocationTypeViewer.propTypes = {
 export default {
   name: 'location',
   view: LocationTypeViewer,
-  edit: LocationTypeEditor
+  edit: LocationTypeEditor,
+  collapsible: true
 }

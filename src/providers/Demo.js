@@ -153,6 +153,7 @@ class Demo {
                 'type': 'group',
                 'name': 'address',
                 'label': 'Address',
+                'collapsed': true,
                 'contents': [
                   {
                     'type': 'text',

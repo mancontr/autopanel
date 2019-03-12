@@ -47,5 +47,6 @@ export default {
   name: 'group',
   view: GroupTypeViewer,
   edit: GroupTypeEditor,
-  preSave
+  preSave,
+  collapsible: true
 }

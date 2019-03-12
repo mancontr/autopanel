@@ -6,7 +6,16 @@ import ErrorBoundary from './ErrorBoundary'
 import { WithAutoPanel, useAutoPanel } from '../api'
 import './EntityEdit.sass'
 
+const coalesce = (...args) => {
+  for (let i = 0; i < args.length; i++) {
+    if (args[i] !== undefined) return args[i]
+  }
+  return undefined
+}
+
 export const EditField = ({ field, value, onChange }) => {
+  const [collapsed, setCollapsed] = useState(field.collapsed || false)
+
   const fieldType = Config.getType(field.type)
   if (!fieldType) {
     const values = { name: field.name, type: field.type }
@@ -16,16 +25,30 @@ export const EditField = ({ field, value, onChange }) => {
       </div>
     )
   }
+  const classes = ['box', 'field', 'field-type-' + field.type]
+
+  let collapseButton = false
+  if (coalesce(field.collapsible, fieldType.collapsible)) {
+    classes.push(collapsed ? 'collapsed' : 'expanded')
+    const handleClick = () => setCollapsed(!collapsed)
+    collapseButton = <div className="toggle-collapse" onClick={handleClick} />
+  }
+
   const Editor = fieldType.edit
   return (
-    <div className={'box field field-type-' + field.type}>
-      <div className="label">{field.label || field.name}</div>
-      {field.description && (
-        <div className="description">{field.description}</div>
-      )}
-      <Editor field={field}
-        value={value}
-        onChange={onChange} />
+    <div className={classes.join(' ')}>
+      <div className="header">
+        <div className="label">{field.label || field.name}</div>
+        {collapseButton}
+      </div>
+      <div className="content">
+        {field.description && (
+          <div className="description">{field.description}</div>
+        )}
+        <Editor field={field}
+          value={value}
+          onChange={onChange} />
+      </div>
     </div>
   )
 }

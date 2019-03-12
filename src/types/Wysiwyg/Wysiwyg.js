@@ -143,5 +143,6 @@ export default {
   name: 'wysiwyg',
   view: WysiwygTypeViewer,
   edit: QuillWithImages,
-  preSave
+  preSave,
+  collapsible: true
 }
