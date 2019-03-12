@@ -3,6 +3,12 @@ import PropTypes from 'prop-types'
 
 const L = typeof window !== 'undefined' && require('leaflet')
 
+const clampLatLng = ({ lat, lng }) => {
+  while (lng < -180) lng += 360
+  while (lng > 180) lng -= 360
+  return [lat, lng]
+}
+
 const LocationTypeEditor = ({ field, value, onChange }) => {
   const mapRef = useRef()
   const mapObject = useRef()
@@ -17,11 +23,12 @@ const LocationTypeEditor = ({ field, value, onChange }) => {
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(mapObject.current)
+    mapObject.current.setMaxBounds([ [-90, -180], [90, 180] ])
 
     markerLayer.current = L.layerGroup().addTo(mapObject.current)
 
     mapObject.current.on('click', (e) => {
-      changeHandler.current([e.latlng.lat, e.latlng.lng])
+      changeHandler.current(clampLatLng(e.latlng))
     })
 
     setTimeout(() => mapObject.current.invalidateSize(), 0)
@@ -34,8 +41,7 @@ const LocationTypeEditor = ({ field, value, onChange }) => {
       markerLayer.current.clearLayers()
       const marker = L.marker(value, { draggable: 'true' })
       marker.on('dragend', () => {
-        const latlng = marker.getLatLng()
-        changeHandler.current([latlng.lat, latlng.lng])
+        changeHandler.current(clampLatLng(marker.getLatLng()))
       })
       marker.addTo(markerLayer.current)
       mapObject.current.setView(value, mapObject.current.getZoom() || 5)
