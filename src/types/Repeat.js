@@ -50,22 +50,17 @@ const RepeatEditor = ({ field, value, onChange }) => {
 const preSave = ({ field, value, entity, attachments }) => {
   if (!value) return
 
-  let subEntity = {}
-
   value.forEach((childValue, i) => {
     const childFieldType = Config.getType(field.content.type)
-    childFieldType &&
-      childFieldType.preSave &&
-      childFieldType.preSave({
-        field: {
-          ...field.content,
-          name: field.name + '[' + i + ']'
-        },
-        value: childValue,
-        entity: subEntity,
-        attachments
-      })
-    value[i] = subEntity[field.name + '[' + i + ']']
+    const name = field.name + '[' + i + ']'
+    const subEntity = { [name]: childValue }
+    childFieldType && childFieldType.preSave && childFieldType.preSave({
+      field: { ...field.content, name },
+      value: childValue,
+      entity: subEntity,
+      attachments
+    })
+    value[i] = subEntity[name]
   })
 
   entity[field.name] = value
