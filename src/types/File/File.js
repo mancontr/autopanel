@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
+import './File.sass'
 
 const HumanSize = ({ size }) => {
   const byteUnits = ['B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']

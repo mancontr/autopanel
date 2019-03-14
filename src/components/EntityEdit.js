@@ -13,7 +13,7 @@ const coalesce = (...args) => {
   return undefined
 }
 
-export const EditField = ({ field, value, onChange }) => {
+export const EditField = ({ field, value, onChange, onRemove }) => {
   const [collapsed, setCollapsed] = useState(field.collapsed || false)
 
   const fieldType = Config.getType(field.type)
@@ -31,7 +31,18 @@ export const EditField = ({ field, value, onChange }) => {
   if (coalesce(field.collapsible, fieldType.collapsible)) {
     classes.push(collapsed ? 'collapsed' : 'expanded')
     const handleClick = () => setCollapsed(!collapsed)
-    collapseButton = <div className="toggle-collapse" onClick={handleClick} />
+    collapseButton =
+      <FormattedMessage id="collapse">
+        {txt => <div className="toggle-collapse" onClick={handleClick} title={txt} />}
+      </FormattedMessage>
+  }
+
+  let removeButton = false
+  if (onRemove) {
+    removeButton =
+      <FormattedMessage id="remove">
+        {txt => <div className="remove-field" onClick={onRemove} title={txt} />}
+      </FormattedMessage>
   }
 
   const Editor = fieldType.edit
@@ -39,7 +50,10 @@ export const EditField = ({ field, value, onChange }) => {
     <div className={classes.join(' ')}>
       <div className="header">
         <div className="label">{field.label || field.name}</div>
-        {collapseButton}
+        <div className="actions">
+          {removeButton}
+          {collapseButton}
+        </div>
       </div>
       <div className="content">
         {field.description && (
@@ -56,7 +70,8 @@ export const EditField = ({ field, value, onChange }) => {
 EditField.propTypes = {
   field: PropTypes.object.isRequired,
   value: PropTypes.any,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
+  onRemove: PropTypes.func
 }
 
 export const EntityEdit = () => {
@@ -105,7 +120,7 @@ export const EntityEdit = () => {
   }
 
   const handleRemove = () => {
-    autopanel.removeEntity()
+    window.confirm('Remove?') && autopanel.removeEntity()
       .then(() => autopanel.go('/project/' + projectId + '/entities/' + type))
   }
 
@@ -130,7 +145,7 @@ export const EntityEdit = () => {
           </ErrorBoundary>
         )
       })}
-      <button className="save button" type="button" onClick={handleSave}
+      <button className="save button primary" type="button" onClick={handleSave}
         disabled={!modified}>
         <FormattedMessage id={modified ? 'save' : 'saved'} />
       </button>

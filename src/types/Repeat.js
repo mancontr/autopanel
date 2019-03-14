@@ -1,47 +1,31 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { FormattedMessage } from 'react-intl'
 import { EditField } from '../components/EntityEdit'
 import Config from '../Config'
 
 const RepeatEditor = ({ field, value, onChange }) => {
+  value = value || []
+  const handleAdd = () => onChange([ ...value, undefined ])
   return (
     <React.Fragment>
-      {value
-        ? value.map((currentValue, i) => (
-          <React.Fragment key={i}>
-            <EditField
-              field={{
-                ...field.content,
-                name: field.name + '[' + i + ']'
-              }}
-              value={currentValue}
-              onChange={v => {
-                value[i] = v
-                onChange(value)
-              }}
-            />
-            <button
-              onClick={() => {
-                value.splice(i, 1)
-                onChange(value)
-              }}
-            >
-                Remove
-            </button>
-          </React.Fragment>
-        ))
-        : undefined}
-
-      <button
-        onClick={() => {
-          if (value) {
-            onChange([...value, undefined])
-          } else {
-            onChange([undefined])
-          }
-        }}
-      >
-        New
+      {value.map((currentValue, i) => {
+        const subfield = { ...field.content, name: field.name + '[' + i + ']' }
+        const handleChange = v => {
+          value[i] = v
+          onChange(value)
+        }
+        const handleRemove = () => {
+          value.splice(i, 1)
+          onChange(value)
+        }
+        return (
+          <EditField field={subfield} value={currentValue} key={i}
+            onChange={handleChange} onRemove={handleRemove} />
+        )
+      })}
+      <button className="add button" onClick={handleAdd}>
+        <FormattedMessage id="add-new" />
       </button>
     </React.Fragment>
   )
@@ -78,5 +62,6 @@ export default {
   name: 'repeat',
   view: RepeatViewer,
   edit: RepeatEditor,
-  preSave
+  preSave,
+  collapsible: true
 }

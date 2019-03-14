@@ -1,4 +1,6 @@
 {
+  "add-new": "Add new...",
+  "collapse": "Collapse/Expand",
   "dashboard": "Dashboard",
   "entities": "Entities",
   "entities.description": "Description",

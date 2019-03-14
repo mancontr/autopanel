@@ -1,4 +1,6 @@
 {
+  "add-new": "Añadir...",
+  "collapse": "Contraer/Expandir",
   "dashboard": "Escritorio",
   "entities": "Entidades",
   "entities.description": "Descripción",
