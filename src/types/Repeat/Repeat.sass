@@ -1,0 +1,25 @@
+.field-type-repeat
+  .repeat-entry-list
+    > .repeat-entry
+      border: 1px solid #e0e0e0
+      display: flex
+      &:not(:first-child)
+        border-top: 0
+      > .cell
+        display: flex
+        align-items: center
+        justify-content: center
+        background-color: #f1f1f1
+        width: 30px
+        &.left
+          border-right: 1px solid #e0e0e0
+        &.right
+          border-left: 1px solid #e0e0e0
+      &:nth-child(2n) .cell
+        background-color: #e8e8e8
+      > .field
+        flex: 1 1 auto
+        border: 0 !important
+        margin: 0 !important
+    > button
+      margin-top: 10px

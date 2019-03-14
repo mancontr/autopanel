@@ -1,14 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
-import { EditField } from '../components/EntityEdit'
-import Config from '../Config'
+import { EditField } from '../../components/EntityEdit'
+import Config from '../../Config'
+import './Repeat.sass'
 
 const RepeatEditor = ({ field, value, onChange }) => {
   value = value || []
   const handleAdd = () => onChange([ ...value, undefined ])
   return (
-    <React.Fragment>
+    <div className="repeat-entry-list">
       {value.map((currentValue, i) => {
         const subfield = { ...field.content, name: field.name + '[' + i + ']' }
         const handleChange = v => {
@@ -20,14 +21,18 @@ const RepeatEditor = ({ field, value, onChange }) => {
           onChange(value)
         }
         return (
-          <EditField field={subfield} value={currentValue} key={i}
-            onChange={handleChange} onRemove={handleRemove} />
+          <div className="repeat-entry" key={i}>
+            <div className="cell left">{i + 1}</div>
+            <EditField field={subfield} value={currentValue}
+              onChange={handleChange} onRemove={handleRemove} />
+            <div className="cell right" />
+          </div>
         )
       })}
       <button className="add button" onClick={handleAdd}>
         <FormattedMessage id="add-new" />
       </button>
-    </React.Fragment>
+    </div>
   )
 }
 
