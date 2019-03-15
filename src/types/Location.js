@@ -32,6 +32,7 @@ const LocationTypeEditor = ({ field, value, onChange }) => {
     })
 
     setTimeout(() => mapObject.current.invalidateSize(), 0)
+    setTimeout(() => mapObject.current.invalidateSize(), 1000)
 
   }, [])
 
