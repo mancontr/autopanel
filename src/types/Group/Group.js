@@ -1,7 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Config from '../Config'
-import { EditField } from '../components/EntityEdit'
+import Config from '../../Config'
+import { EditField } from '../../components/EntityEdit'
+import './Group.sass'
 
 const withFullName = (child, parent) => ({
   ...child,

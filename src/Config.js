@@ -9,7 +9,7 @@ import WysiwygType from './types/Wysiwyg/Wysiwyg'
 import DateType from './types/Date'
 import FileType from './types/File/File'
 import LocationType from './types/Location'
-import GroupType from './types/Group'
+import GroupType from './types/Group/Group'
 import RelationshipType from './types/Relationship'
 
 const config = {
