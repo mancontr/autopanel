@@ -1,10 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { FormattedMessage } from 'react-intl'
 
 const SelectTypeEditor = ({ field, value, onChange }) => {
   const handler = (e) => onChange(e.target.value)
   return (
-    <select name={field.name} value={value} onChange={handler}>
+    <select name={field.name} value={value || ''} onChange={handler}>
+      <FormattedMessage id="select">
+        {txt => <option value="" hidden disabled>{txt}</option>}
+      </FormattedMessage>
       {field.options.map((option) => {
         if (typeof option === 'string') {
           option = { value: option, label: option }
