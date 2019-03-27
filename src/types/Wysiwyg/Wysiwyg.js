@@ -96,7 +96,7 @@ const QuillWithImages = ({ field, value, onChange }, ref) => {
 }
 QuillWithImages.propTypes = {
   field: PropTypes.object.isRequired,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   onChange: PropTypes.func.isRequired
 }
 

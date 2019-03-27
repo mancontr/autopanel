@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 const SelectTypeEditor = ({ field, value, onChange }) => {
   const handler = (e) => onChange(e.target.value)
   return (
-    <select name={field.name} value={value} onChange={handler}>
+    <select name={field.name} value={value || undefined} onChange={handler}>
       {field.options.map((option) => {
         if (typeof option === 'string') {
           option = { value: option, label: option }
@@ -18,7 +18,7 @@ const SelectTypeEditor = ({ field, value, onChange }) => {
 
 SelectTypeEditor.propTypes = {
   field: PropTypes.object.isRequired,
-  value: PropTypes.string,
+  value: PropTypes.any,
   onChange: PropTypes.func.isRequired
 }
 
