@@ -22,7 +22,7 @@ const SelectTypeEditor = ({ field, value, onChange }) => {
 
 SelectTypeEditor.propTypes = {
   field: PropTypes.object.isRequired,
-  value: PropTypes.string,
+  value: PropTypes.any,
   onChange: PropTypes.func.isRequired
 }
 

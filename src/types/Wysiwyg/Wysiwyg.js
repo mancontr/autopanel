@@ -96,7 +96,7 @@ const QuillWithImages = ({ field, value, onChange }, ref) => {
 }
 QuillWithImages.propTypes = {
   field: PropTypes.object.isRequired,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   onChange: PropTypes.func.isRequired
 }
 
@@ -109,7 +109,7 @@ WysiwygTypeViewer.propTypes = {
 }
 
 const preSave = ({ field, value, entity, attachments }) => {
-  if (typeof value === 'string') return // No conversion needed
+  if (typeof value === 'string' || !value) return // No conversion needed
   const converter = new QuillDeltaToHtmlConverter(value.ops, {})
   converter.renderCustomWith((customOp, contextOp) => {
     const { type, value } = customOp.insert
