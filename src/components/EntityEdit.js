@@ -115,7 +115,10 @@ export const EntityEdit = () => {
         })
     } else {
       autopanel.saveEntity(entityCopy, attachments)
-        .then(() => setModified(false))
+        .then((newEntity) => {
+          setEntity(newEntity || entity)
+          setModified(false)
+        })
     }
   }
 

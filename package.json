@@ -1,6 +1,6 @@
 {
   "name": "autopanel",
-  "version": "0.6.2",
+  "version": "0.7.0",
   "description": "An extensible CMS using Git as a backend.",
   "repository": "mancontr/autopanel",
   "keywords": [
