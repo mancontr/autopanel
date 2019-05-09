@@ -21,9 +21,14 @@ const usePreview = (value) => {
   const [url, setUrl] = useState(false)
   useEffect(() => {
     if (!value || !value.type || !value.type.startsWith('image/')) return
-    setUrl(value instanceof File ? URL.createObjectURL(value) : value.url)
-    return () => {
-      URL.revokeObjectURL(url)
+    if (value instanceof File) {
+      setUrl(URL.createObjectURL(value))
+      return () => URL.revokeObjectURL(url)
+    } else if (typeof value.url === 'object') {
+      const anyKey = Object.keys(value.url)[0]
+      setUrl(value.url[anyKey])
+    } else {
+      setUrl(value.url)
     }
   }, [value])
   return url
